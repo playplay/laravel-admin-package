@@ -1,4 +1,4 @@
-@extends('admin.layouts.auth')
+@extends('admin::layouts.auth')
 
 @section('html.head.title')
     Password reset
@@ -30,8 +30,7 @@
 
             <div class="login-box-body">
                 <p class="login-box-msg">Réinitialiser le mot de passe</p>
-                <form action="{{ route('admin.postPasswordReset') }}" method="post">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                {!! Form::open(['route' => 'admin.auth.passwordReset']) !!}
                     <input type="hidden" name="token" value="{{ $token }}">
                     <div class="form-group has-feedback">
                         <input type="email" class="form-control" placeholder="Email" name="email"
@@ -59,16 +58,23 @@
                         <div class="col-xs-2">
                         </div><!-- /.col -->
                     </div>
-                </form>
+                {!! Form::close() !!}
 
-                <a href="{{ route('admin.login') }}">Connexion</a><br>
-            <!--<a href="{{ route('admin.register') }}" class="text-center">Register a new membership</a>-->
-
+                <div class="row" style="margin-top: 0.5em">
+                    <div class="col-xs-6">
+                        <a href="{{ route('admin.auth.login') }}">Se connecter</a><br>
+                    </div>
+                    @if(config('admin.is_registration_open'))
+                        <div class="col-xs-6 text-right">
+                            <a href="{{ route('admin.auth.register') }}">S'inscrire</a>
+                        </div>
+                    @endif
+                </div>
             </div><!-- /.login-box-body -->
 
         </div><!-- /.login-box -->
 
-        @include('admin.layouts.partials.html.scripts_auth')
+        @include('admin::layouts.partials.html.scripts_auth')
 
         <script>
             $(function () {

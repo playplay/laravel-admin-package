@@ -1,4 +1,4 @@
-@extends('admin.layouts.auth')
+@extends('admin::layouts.auth')
 
 @section('html.head.title')
     Récupération de mot de passe
@@ -29,44 +29,37 @@
             @endif
 
             <div class="login-box-body">
-                <p class="login-box-msg">Reset Password</p>
-                <form action="{{ route('admin.postPasswordEmail') }}" method="post">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <p class="login-box-msg">Réinitialiser le mot de passe</p>
+                {!! Form::open(['route' => 'admin.auth.passwordSendEmail']) !!}
                     <div class="form-group has-feedback">
                         <input type="email" class="form-control" placeholder="Email" name="email"
                                value="{{ old('email') }}"/>
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
 
-                    <div class="row">
-                        <div class="col-xs-2">
-                        </div><!-- /.col -->
-                        <div class="col-xs-8">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">Send Password Reset Link
-                            </button>
-                        </div><!-- /.col -->
-                        <div class="col-xs-2">
-                        </div><!-- /.col -->
-                    </div>
-                </form>
+                <div class="row">
+                    <div class="col-xs-offset-3 col-xs-6">
+                        <button type="submit" class="btn btn-default btn-block btn-flat">Envoyer le mail</button>
+                    </div><!-- /.col -->
+                </div>
 
-                <a href="{{ url('/login') }}">Log in</a><br>
-            <!--<a href="{{ url('/register') }}" class="text-center">Register a new membership</a>-->
+                {!! Form::close() !!}
+
+                <div class="row" style="margin-top: 0.5em">
+                    <div class="col-xs-6">
+                        <a href="{{ route('admin.auth.login') }}">Se connecter</a><br>
+                    </div>
+                    @if(config('admin.is_registration_open'))
+                        <div class="col-xs-6 text-right">
+                            <a href="{{ route('admin.auth.register') }}">S'inscrire</a>
+                        </div>
+                    @endif
+                </div>
 
             </div><!-- /.login-box-body -->
 
         </div><!-- /.login-box -->
 
-        @include('admin.layouts.partials.html.scripts_auth')
-
-        <script>
-            $(function () {
-                $('input').iCheck({
-                    checkboxClass: 'icheckbox_square-blue',
-                    radioClass: 'iradio_square-blue',
-                    increaseArea: '20%' // optional
-                });
-            });
-        </script>
+        @include('admin::layouts.partials.html.scripts_auth')
     </body>
 @endsection

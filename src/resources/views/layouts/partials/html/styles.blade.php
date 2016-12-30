@@ -1,8 +1,8 @@
 <!-- adminlte -->
 
-<link rel="stylesheet" type="text/css" href="{{ asset('vendor/adminlte/bootstrap/css/bootstrap.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('vendor/adminlte/dist/css/AdminLTE.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('vendor/adminlte/dist/css/skins/_all-skins.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('vendor/adminlte/css/AdminLTE.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('vendor/adminlte/css/skins/_all-skins.min.css') }}">
 
 <!-- select2 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">

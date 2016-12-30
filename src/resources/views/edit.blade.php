@@ -1,4 +1,4 @@
-@extends("admin.layouts.app")
+@extends("admin::layouts.app")
 
 @section('html.head.title', ucfirst($config['vars']))
 @section('contentheader.title', ucfirst($config['vars']))
