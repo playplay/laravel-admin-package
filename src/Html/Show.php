@@ -1,6 +1,6 @@
 <?php
 
-namespace MathieuTu\LaravelAdminPackage\Html;
+namespace LaravelAdminPackage\Html;
 
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;

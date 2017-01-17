@@ -1,9 +1,9 @@
 <?php
 
-namespace MathieuTu\LaravelAdminPackage\App\Http\Controllers\Auth;
+namespace LaravelAdminPackage\App\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
-use MathieuTu\LaravelAdminPackage\app\Http\Controllers\Controller;
+use LaravelAdminPackage\App\Http\Controllers\Controller;
 
 class ForgotPasswordController extends Controller
 {

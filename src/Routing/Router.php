@@ -1,6 +1,6 @@
 <?php
 
-namespace MathieuTu\LaravelAdminPackage\Routing;
+namespace LaravelAdminPackage\Routing;
 
 class Router extends \Illuminate\Routing\Router
 {

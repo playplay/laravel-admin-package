@@ -1,6 +1,6 @@
 <?php
 
-namespace MathieuTu\LaravelAdminPackage;
+namespace LaravelAdminPackage;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
@@ -110,7 +110,7 @@ class InstallationServiceProvider extends ServiceProvider
             if (config('admin.use_default_auth')) {
                 $router->group([
                     'as'        => 'auth.',
-                    'namespace' => 'MathieuTu\LaravelAdminPackage\app\Http\Controllers',
+                    'namespace' => 'LaravelAdminPackage\App\Http\Controllers',
                 ], function (Router $router) {
                     $router->auth();
                 });
@@ -129,7 +129,7 @@ class InstallationServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('router', function ($app) {
-            return new \MathieuTu\LaravelAdminPackage\Routing\Router($app['events'], $app);
+            return new Routing\Router($app['events'], $app);
         });
     }
 }

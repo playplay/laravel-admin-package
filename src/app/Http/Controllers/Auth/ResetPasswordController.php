@@ -1,10 +1,10 @@
 <?php
 
-namespace MathieuTu\LaravelAdminPackage\App\Http\Controllers\Auth;
+namespace LaravelAdminPackage\App\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
-use MathieuTu\LaravelAdminPackage\app\Http\Controllers\Controller;
+use LaravelAdminPackage\App\Http\Controllers\Controller;
 
 class ResetPasswordController extends Controller
 {

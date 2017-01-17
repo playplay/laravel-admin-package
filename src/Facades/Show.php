@@ -1,6 +1,6 @@
 <?php 
 
-namespace MathieuTu\LaravelAdminPackage\Facades;
+namespace LaravelAdminPackage\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

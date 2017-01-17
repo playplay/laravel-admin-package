@@ -1,6 +1,6 @@
 <?php
 
-namespace MathieuTu\LaravelAdminPackage\App\Http\Controllers;
+namespace LaravelAdminPackage\App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;

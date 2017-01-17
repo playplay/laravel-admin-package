@@ -14,13 +14,13 @@
     },
     "autoload": {
         "psr-4": {
-            "MathieuTu\\LaravelAdminPackage\\": "src",
-            "MathieuTu\\LaravelAdminPackage\\App\\": "app"
+            "LaravelAdminPackage\\": "src/",
+            "LaravelAdminPackage\\App\\": "src/app/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "MathieuTu\\LaravelAdminPackage\\Tests\\": "tests"
+            "LaravelAdminPackage\\Tests\\": "tests/"
         }
     },
     "scripts": {

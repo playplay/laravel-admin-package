@@ -1,14 +1,14 @@
 <?php
 
-namespace MathieuTu\LaravelAdminPackage;
+namespace LaravelAdminPackage;
 
 use Collective\Html\FormFacade;
 use Collective\Html\HtmlFacade;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
-use MathieuTu\LaravelAdminPackage\Html\Form;
-use MathieuTu\LaravelAdminPackage\Html\Show;
+use LaravelAdminPackage\Html\Form;
+use LaravelAdminPackage\Html\Show;
 
 class ViewHelpersServiceProvider extends ServiceProvider
 {

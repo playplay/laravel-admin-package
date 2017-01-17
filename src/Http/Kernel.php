@@ -1,6 +1,6 @@
 <?php
 
-namespace MathieuTu\LaravelAdminPackage\Http;
+namespace LaravelAdminPackage\Http;
 
 class Kernel extends \Illuminate\Foundation\Http\Kernel
 {
