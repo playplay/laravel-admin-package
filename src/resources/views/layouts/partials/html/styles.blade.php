@@ -4,8 +4,6 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('vendor/adminlte/css/AdminLTE.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('vendor/adminlte/css/skins/_all-skins.min.css') }}">
 
-<!-- select2 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
 
 <!-- jquery-toogles -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toggles/2.0.4/toggles.min.css">

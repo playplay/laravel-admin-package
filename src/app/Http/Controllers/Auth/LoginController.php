@@ -1,6 +1,6 @@
 <?php
 
-namespace MathieuTu\LaravelAdminPackage\app\Http\Controllers\Auth;
+namespace MathieuTu\LaravelAdminPackage\App\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use MathieuTu\LaravelAdminPackage\app\Http\Controllers\Controller;

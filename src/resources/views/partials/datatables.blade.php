@@ -1,58 +1,38 @@
-@extends("admin::layouts.app")
+<table id="{{ $tableId = 'table_' . str_random() }}" class="table table-bordered table-striped table-hover" rel="datatables">
+    <thead>
+        <tr>
+            @foreach( $columns as $label => $value )
+                <th>{{ $label }}</th>
+            @endforeach
+            @if(isset($config['has_actions']))
+                <th>Actions</th>
+            @endif
+        </tr>
+    </thead>
+    <tbody>
 
-@section('html.head.title', ucfirst($config['vars']))
-@section('contentheader.title', ucfirst($config['vars']))
-@section('contentheader.description', $config['description'])
-
-@section('contentheader.elements', $config['elements'])
-
-@section("main-content")
-
-    <div class="box">
-        <!--<div class="box-header"></div>-->
-        <div class="box-body">
-            <table id="index" class="table table-bordered table-striped table-hover">
-                <thead>
-                <tr>
-                    @foreach( $columns as $label => $value )
-                        <th>{{$label}}</th>
-                    @endforeach
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-
-@endsection
-
-@push('styles')
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.12/r-2.1.0/rr-1.1.2/datatables.min.css"/>
-@endpush
-
+    </tbody>
+</table>
 @push('scripts')
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.12/r-2.1.0/rr-1.1.2/datatables.min.js"></script>
-<script>
+<script type="text/javascript">
     $(function () {
-        var datatable = $("#index").DataTable({
+        var datatable = $("#{{ $tableId }}").DataTable({
             @if(isset($config['reorder_url']))
-                rowReorder: {
-                    update: false,
-                    dataSrc: 'order'
-                },
+            rowReorder: {
+                update: false,
+                dataSrc: 'order'
+            },
             @endif
             processing: true,
             serverSide: true,
             ajax: "{{ $config['ajax_url'] }}",
             columns: [
                 @foreach( $columns as $label => $value )
-                    {data: '{{$value}}', name: '{{$value}}'},
+                    {data: '{{ $value }}', name: '{{ $value }}'},
                 @endforeach
-                {data: 'actions', name: 'actions'}
+                @if(isset($config['has_actions']))
+                    {data: 'actions', name: 'actions', searchable: false, orderable: false}
+                @endif
             ],
             language: {
                 processing: "Traitement en cours...",
@@ -77,8 +57,7 @@
                 search: "_INPUT_",
                 searchPlaceholder: "Recherche"
             },
-            columnDefs: [{orderable: false, targets: [-1]}],
-            fnDrawCallback: function(oSettings) {
+            fnDrawCallback: function (oSettings) {
                 if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
                     $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
                     var $indexInfo = $('#index_info');
@@ -95,23 +74,23 @@
 
         });
         @if(isset($config['reorder_url']))
-            datatable.on('row-reorder', function ( e, diff ) {
-                $.ajax({
-                    url: "{{ $config['reorder_url'] }}",
-                    type: 'POST',
-                    data: JSON.stringify(diff),
-                    headers: {
-                        'X-CSRF-TOKEN': '{{csrf_token()}}',
-                        'content-type': 'application/json'
-                    },
-                    success: function (data) {
-                        datatable.ajax.reload(null, false);
-                    },
-                    error: function (data) {
-                        alert('Problème ! merci de contacter l\'admin !');
-                    }
-                });
+            datatable.on('row-reorder', function (e, diff) {
+            $.ajax({
+                url: "{{ $config['reorder_url'] }}",
+                type: 'POST',
+                data: JSON.stringify(diff),
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'content-type': 'application/json'
+                },
+                success: function (data) {
+                    datatable.ajax.reload(null, false);
+                },
+                error: function (data) {
+                    swal('Oups !', 'Un problème est survenu, merci de contacter un admin.', 'error');
+                }
             });
+        });
         @endif
     });
 

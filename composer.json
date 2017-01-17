@@ -4,22 +4,23 @@
     "license": "MIT",
     "require": {
         "laravel/framework": "5.3.*",
-        "uxweb/sweet-alert":"^1.4",
+        "uxweb/sweet-alert": "^1.4",
         "laravelcollective/html": "^5.3",
-        "almasaeed2010/AdminLTE" : "2.3.*",
-        "twbs/bootstrap": "^3.3"
+        "almasaeed2010/AdminLTE": "2.3.*",
+        "watson/bootstrap-form": "^1.1"
     },
     "require-dev": {
-        "phpunit/phpunit" : "4.*"
+        "phpunit/phpunit": "4.*"
     },
     "autoload": {
         "psr-4": {
-            "MathieuTu\\LaravelAdminPackage\\": "src"
+            "MathieuTu\\LaravelAdminPackage\\": "src",
+            "MathieuTu\\LaravelAdminPackage\\App\\": "app"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "MathieuTu\\LaravelAdminPackage\\Tests": "tests"
+            "MathieuTu\\LaravelAdminPackage\\Tests\\": "tests"
         }
     },
     "scripts": {
