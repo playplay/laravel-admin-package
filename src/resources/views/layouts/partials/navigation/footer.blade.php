@@ -1,8 +1,8 @@
 @if(!isset($no_padding))
 <footer class="main-footer">
     <div class="pull-right hidden-xs">
-        www.forum-am.fr
+        Backoffice Admin
     </div>
-    <strong>Copyright &copy; 2016</strong>
+    <strong>Copyright &copy; {{ \Carbon\Carbon::now()->year }}</strong>
 </footer>
 @endif

@@ -1,8 +1,8 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        @yield('contentheader.title', 'Page Header here')
-        <small>@yield('contentheader.description')</small>
+        @yield('contentheader.title', 'Page Header ici avec @section(\'contentheader.title\', \'Mon titre\')')
+        <small>@yield('contentheader.description', 'Page description ici avec @section(\'contentheader.description\', \'Ma description\')')</small>
     </h1>
     @hasSection('contentheader.elements')
         <span class="headerElems">

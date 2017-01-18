@@ -9,6 +9,7 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('vendor/adminlte/js/app.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('vendor/plugins/slimScroll/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
 
 <!-- Loaded by page -->
 @stack('scripts')

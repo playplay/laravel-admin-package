@@ -1,10 +1,10 @@
 @push('styles')
-{{ Html::style(asset('vendor/plugins/select2/select2.css')) }}
+{{ Html::style('vendor/plugins/select2/select2.css') }}
 @endpush
 
 @push('scripts')
-{{ Html::script(asset('vendor/plugins/select2/select2.full.min.js')) }}
-{{ Html::script(asset('vendor/plugins/select2/i18n/fr.js')) }}
+{{ Html::script('vendor/plugins/select2/select2.full.min.js') }}
+{{ Html::script('vendor/plugins/select2/i18n/fr.js') }}
 
 <script type="text/javascript">
     $(function () {

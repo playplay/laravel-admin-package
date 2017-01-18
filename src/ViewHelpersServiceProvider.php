@@ -58,6 +58,7 @@ class ViewHelpersServiceProvider extends ServiceProvider
         $this->app->singleton('admin_form', function ($app) {
             return new Form($app['html'], $app['form'], $app['config']);
         });
+        AliasLoader::getInstance()->alias('AdminShow', Facades\Show::class);
     }
 
     private function registerShow()
@@ -65,5 +66,6 @@ class ViewHelpersServiceProvider extends ServiceProvider
         $this->app->singleton('admin_show', function ($app) {
             return new Show($app['html'], $app['form']);
         });
+        AliasLoader::getInstance()->alias('AdminForm', Facades\Form::class);
     }
 }

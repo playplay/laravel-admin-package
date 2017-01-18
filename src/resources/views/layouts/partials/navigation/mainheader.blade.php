@@ -19,9 +19,9 @@
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 @if (Auth::check())
-                    @if(session()->has('orig_user'))
+                    {{--@if(session()->has('orig_user'))
                         <li>{{ link_to_action('Admin\UserController@logAs', 'Repasser en tant qu\'admin ') }}</li>
-                    @endif
+                    @endif--}}
                     <!-- User Account Menu -->
                     <li class="dropdown user user-menu">
                         <!-- Menu Toggle Button -->
@@ -31,10 +31,10 @@
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
                             <li class="user-header">
-                                <img src="{{ asset(Auth::user()->company->logo) }}" class="img-circle" alt="User Image" />
+                                <img src="{{ '' }}" class="img-circle" alt="User Image" />
                                 <p>
-                                    {{ Auth::user()->full_name }}
-                                    <small>{{ Auth::user()->company->name }}</small>
+                                    {{ Auth::user()->name }}
+                                    <small>{{ Auth::user()->email }}</small>
                                 </p>
                             </li>
                             <!-- Menu Footer-->
@@ -43,7 +43,7 @@
                                     <a href="#" class="btn btn-default btn-flat">Mon compte</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="{{ route('admin.logout') }}" class="btn btn-default btn-flat">Déconnexion</a>
+                                    <a href="{{ route('admin.auth.logout') }}" class="btn btn-default btn-flat">Déconnexion</a>
                                 </div>
                             </li>
                         </ul>

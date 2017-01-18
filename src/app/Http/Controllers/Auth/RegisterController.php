@@ -31,6 +31,10 @@ class RegisterController extends Controller
      * @var \Illuminate\Validation\Factory
      */
     private $validator;
+    /**
+     * @var \Illuminate\Contracts\Auth\Authenticatable | \Illuminate\Database\Eloquent\Model
+     */
+    private $model;
 
     /**
      * Create a new controller instance.
@@ -43,6 +47,7 @@ class RegisterController extends Controller
 
         $this->redirectTo = route('admin.home');
         $this->validator = $validator;
+        $this->model = config('admin.user_model_fqn');
     }
 
     /**
@@ -54,9 +59,10 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $table = (new $this->model)->getTable();
         return $this->validator->make($data, [
             'name'     => 'required|max:255',
-            'email'    => 'required|email|max:255|unique:users',
+            'email'    => 'required|email|max:255|unique:' . $table,
             'password' => 'required|min:6|confirmed',
         ]);
     }
@@ -70,8 +76,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user_model_fqn = config('admin.user_model_fqn');
-        return $user_model_fqn::create([
+        return call_user_func($this->model . '::create', [
             'name'     => $data['name'],
             'email'    => $data['email'],
             'password' => bcrypt($data['password']),

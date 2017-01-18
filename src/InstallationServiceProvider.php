@@ -52,25 +52,29 @@ class InstallationServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/public' => public_path('admin')], 'public');
     }
 
-    private function publishesTemplate()
+    private function publishesTemplate($group = 'template')
     {
         $this->publishes([
             base_path('vendor/almasaeed2010/adminlte/dist/js')  => public_path('vendor/adminlte/js'),
             base_path('vendor/almasaeed2010/adminlte/dist/css') => public_path('vendor/adminlte/css'),
-        ], 'template');
+        ], $group);
 
         $this->publishes([
-            base_path('vendor/almasaeed2010/adminlte/bootstrap/js')  => public_path('vendor/bootstrap/js'),
-            base_path('vendor/almasaeed2010/adminlte/bootstrap/css') => public_path('vendor/bootstrap/css'),
-        ], 'template');
+            base_path('vendor/almasaeed2010/adminlte/bootstrap/') => public_path('vendor/bootstrap/'),
+        ], $group);
 
         $this->publishes([
-            base_path(__DIR__ . '/public/vendor/swal/') => public_path('vendor/swal'),
-        ], 'template');
+            __DIR__ . '/public/vendor/swal/' => public_path('vendor/swal'),
+        ], $group);
+
+        $this->publishes([
+            base_path('vendor/fortawesome/font-awesome/css')   => public_path('vendor/fa/css'),
+            base_path('vendor/fortawesome/font-awesome/fonts') => public_path('vendor/fa/fonts'),
+        ], $group);
 
         $this->publishes([
             base_path('vendor/almasaeed2010/adminlte/plugins/') => public_path('vendor/plugins/'),
-        ], 'template');
+        ], $group);
     }
 
     /**
@@ -82,7 +86,7 @@ class InstallationServiceProvider extends ServiceProvider
         $this->loadViewsFrom(resource_path('views/admin'), 'admin');
 
         // - then the stock views that come with the package, in case a published view might be missing
-        $this->loadViewsFrom(realpath(__DIR__ . '/resources/views'), 'admin');
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'admin');
 
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom($configPath . '/admin.php', 'admin');
@@ -91,7 +95,8 @@ class InstallationServiceProvider extends ServiceProvider
     /**
      * Define the routes for the application.
      *
-     * @param \Illuminate\Routing\Router $router
+     *
+     * @param \Illuminate\Routing\Router | \LaravelAdminPackage\Routing\Router $router
      *
      * @return void
      */
@@ -116,7 +121,12 @@ class InstallationServiceProvider extends ServiceProvider
                 });
             }
             if (file_exists(base_path('routes/admin.php'))) {
-                require base_path('routes/admin.php');
+                $router->group([
+                    'namespace'  => 'App\Http\Controllers\Admin',
+                    'middleware' => 'auth',
+                ], function (Router $router) {
+                    require base_path('routes/admin.php');
+                });
             }
         });
     }

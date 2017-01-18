@@ -7,7 +7,7 @@
             @include('admin::layouts.partials.navigation.sidebar')
 
             <div class="content-wrapper">
-                @if(!$no_header)
+                @if(!isset($no_header))
                     @include('admin::layouts.partials.navigation.contentheader')
                 @endif
 
