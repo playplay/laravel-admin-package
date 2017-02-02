@@ -1,3 +1,3 @@
-@include('admin::partials.partials.select2')
-@include('admin::partials.partials.colorpicker')
-@include('admin::partials.partials.delete-button')
+@include('admin::partials.assets.select2')
+@include('admin::partials.assets.colorpicker')
+@include('admin::partials.assets.delete-button')

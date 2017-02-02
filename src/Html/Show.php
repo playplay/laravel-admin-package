@@ -4,6 +4,7 @@ namespace LaravelAdminPackage\Html;
 
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Route;
 
@@ -27,14 +28,35 @@ class Show
 
     public function open($model)
     {
-        $this->reset()->setModel($model);
+        return $this->reset()->setModel($model);
     }
 
-    public function setModel(\Eloquent $model)
+    public function setModel($model)
     {
-        $this->model = $model;
+        $this->model = $this->findModel($model);
 
         return $this;
+    }
+
+    private function findModel($model)
+    {
+        if (is_array($model)) {
+            list($model, $id) = $model;
+        }
+
+        if (is_string($model)) {
+            $model = new $model;
+        }
+
+        if (!($model instanceof Model)) {
+            throw new \InvalidArgumentException('Le model doit étendre Eloquent\Model');
+        }
+
+        if (isset($id)) {
+            $model = $model->find(1);
+        }
+
+        return $model;
     }
 
     public function reset()
@@ -66,7 +88,7 @@ class Show
     private function makeUrl($hrefWithParameters = null, $model = null)
     {
         if ($model) {
-            $model = is_string($model) ? $model : get_class($model);
+            $model = $this->findModel($model);
         } else {
             $model = $this->model;
         }
@@ -79,8 +101,8 @@ class Show
         }
 
         if ($href) {
-            if (in_array(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'], $href)) {
-                $href = 'Admin\\' . Str::studly($model) . 'Controller@' . $href;
+            if (in_array($href, ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])) {
+                $href = 'Admin\\' . Str::studly(class_basename($model)) . 'Controller@' . $href;
 
                 return action($href, $parameters);
             }
@@ -151,9 +173,9 @@ class Show
         return link_to('mailto:' . $this->model->$attribute, $this->model->$attribute);
     }
 
-    public function showButton($title = 'Voir', $options = [], $type = 'link')
+    public function createButton($title = 'Ajouter', $options = [], $type = 'link')
     {
-        return $this->button('show', $title, $options, $type);
+        return $this->button(['create', null], $title, $options, $type);
     }
 
     private function button($hrefWithParameters, $title, $options, $type)
@@ -161,16 +183,6 @@ class Show
         $method = $type . 'Button';
 
         return $this->$method($hrefWithParameters, $title, $options);
-    }
-
-    public function createButton($title = 'Ajouter', $options = [], $type = 'link')
-    {
-        return $this->button(['create', null], $title, $options, $type);
-    }
-
-    public function editButton($title = 'Editer', $options = [], $type = 'link')
-    {
-        return $this->button('edit', $title, $options, $type);
     }
 
     public function indexButton($title = 'Retour à la liste', $options = [], $type = 'link')
@@ -183,30 +195,51 @@ class Show
         $href = $this->makeUrl($hrefWithParameters);
         $options = array_merge(['class' => 'btn'], $options);
 
-        return link_to($href, $title, $options);
+        return link_to($href, $title, $options, null, false);
     }
 
     public function modalButton($hrefWithParameters, $title, $options = [])
     {
         $href = $this->makeUrl($hrefWithParameters);
-        $options = array_merge(['data-toggle' => 'modal', 'data-target' => '#modal', 'data-href' => $href], $options);
+        $options = array_merge(['data-toggle' => 'modal', 'data-target' => '#modal', 'href' => $href], $options);
         $options = array_merge(['class' => 'btn'], $options);
 
         return $this->form->button($title, $options);
     }
 
-    public function deleteButton($title, $attribute = null, $options = [], $redirect = null)
+    public function indexActions($nameAttribute = null)
     {
-        $this->form->open(['method' => 'delete', 'url' => $this->makeUrl('destroy'), 'rel' => 'delete-button']);
-        if ($attribute) {
-            $this->form->hidden('name', $this->model->$attribute);
+        $output = $this->showButton('<i class="fa fa-eye"></i>', ['class' => 'btn btn-info btn-xs', 'style' => 'margin: 0 2px']);
+        $output .= $this->editButton('<i class="fa fa-edit"></i>', ['class' => 'btn btn-warning btn-xs', 'style' => 'margin: 0 2px']);
+        $output .= $this->deleteButton('<i class="fa fa-times"></i>', ['class' => 'btn btn-danger btn-xs', 'style' => 'margin: 0 2px'], $nameAttribute);
+
+        return $output;
+    }
+
+    public function showButton($title = 'Voir', $options = [], $type = 'link')
+    {
+        return $this->button('show', $title, $options, $type);
+    }
+
+    public function editButton($title = 'Editer', $options = [], $type = 'link')
+    {
+        return $this->button('edit', $title, $options, $type);
+    }
+
+    public function deleteButton($title, $options = [], $nameAttribute = null, $redirect = null)
+    {
+        $output = $this->form->open(['method' => 'delete', 'url' => $this->makeUrl('destroy'), 'rel' => 'delete-button', 'style' => 'display:inline']);
+        if ($nameAttribute) {
+            $output .= $this->form->hidden('name', $this->model->$nameAttribute);
         }
         if ($redirect) {
-            $this->form->hidden('redirect', $this->makeUrl($redirect));
+            $output .= $this->form->hidden('redirect', $this->makeUrl($redirect));
         }
 
-        $this->form->submit($title, array_merge(['class' => 'btn'], $options));
-        $this->form->close();
+        $output .= $this->form->button($title, array_merge(['class' => 'btn', 'type' => 'submit'], $options));
+        $output .= $this->form->close();
+
+        return $output;
     }
 
 }

@@ -1,9 +1,9 @@
 @push('styles')
-{{ Html::style('vendor/plugins/colorpicker/bootstrap-colorpicker.min.css') }}
+{{ Html::style('admin/vendor/plugins/colorpicker/bootstrap-colorpicker.min.css') }}
 @endpush
 
 @push('scripts')
-{{ Html::script('vendor/plugins/colorpicker/bootstrap-colorpicker.min.js') }}
+{{ Html::script('admin/vendor/plugins/colorpicker/bootstrap-colorpicker.min.js') }}
 
 <script type="text/javascript">
     $(function () {

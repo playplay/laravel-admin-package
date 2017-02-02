@@ -2,11 +2,13 @@
 
 namespace LaravelAdminPackage\Html;
 
+use Illuminate\Support\Str;
 use Watson\BootstrapForm\BootstrapForm;
 
 class Form extends BootstrapForm
 {
     protected $feedbackIcon;
+    protected $withoutFormGroup;
 
     public function select($name, $label = null, $list = [], $selected = null, array $options = [])
     {
@@ -71,9 +73,22 @@ class Form extends BootstrapForm
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
         $formGroup =  $this->getFormGroup($name, $label, $wrapperElement);
-        $this->resetField();
+
+        $this->resetInputOptions();
 
         return $formGroup;
+    }
+
+    /**
+     * @param mixed $withoutFormGroup
+     *
+     * @return Form
+     */
+    public function withoutFormGroup()
+    {
+        $this->withoutFormGroup = true;
+
+        return $this;
     }
 
     /**
@@ -100,9 +115,40 @@ class Form extends BootstrapForm
         return array_merge(['class' => $class], $options);
     }
 
-    private function resetField()
+    private function resetInputOptions()
     {
         $this->feedbackIcon = null;
+        $this->withoutFormGroup = null;
+    }
+
+    /**
+     * Get a form group with or without a label.
+     *
+     * @param  string  $name
+     * @param  string  $label
+     * @param  string  $element
+     * @return string
+     */
+    public function getFormGroup($name = null, $label = null, $wrapperElement)
+    {
+        if ($this->withoutFormGroup) {
+            return $wrapperElement;
+        }
+
+        return parent::getFormGroup($name, $label, $wrapperElement);
+    }
+
+    protected function getLabelTitle($label, $name)
+    {
+        if ($label === false) {
+            return null;
+        }
+
+        if ($label === null && \Lang::has("validation.attributes.{$name}")) {
+            return \Lang::get("validation.attributes.{$name}");
+        }
+
+        return $label ?: str_replace('_', ' ', Str::title($name));
     }
 
     /* TODO Image field with image preview :

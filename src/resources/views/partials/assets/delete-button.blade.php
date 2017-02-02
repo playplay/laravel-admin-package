@@ -1,10 +1,11 @@
 @push('scripts')
 <script type="text/javascript">
     $(function () {
-        $('form[rel="delete-button"]').on('submit', function (submission) {
-            submission.preventDefault();
+        $(document).on('submit','form[rel="delete-button"]', function(event) {
+            event.preventDefault();
+
             var form = $(this), url = form.attr('action');
-            var data = form.serialize();
+            var data = form.serializeObject();
 
             swal({
                 title: 'Êtes vous sûr ?',
@@ -21,15 +22,15 @@
                     headers: {
                         'X-CSRF-TOKEN': data._token
                     }
-                }).done(function (data) {
+                }).done(function () {
                     swal('Supprimé !', (data.name || 'L\'élément') + ' a été supprimé !', 'success');
                     if (data.redirect !== undefined) {
                         window.location = data.redirect;
                     }
                     $('[rel="datatables"]').DataTable().ajax.reload(null, false);
-                }).error(function (data) {
-                    if (data.status === 400) {
-                        var res = data.responseJSON;
+                }).error(function (response) {
+                    if (response.status === 400) {
+                        var res = response.responseJSON;
                         swal({
                             title: res.title,
                             text: res.message,
@@ -44,5 +45,22 @@
             });
         });
     });
+
+    $.fn.serializeObject = function()
+    {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
 </script>
 @endpush

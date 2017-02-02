@@ -1,8 +1,9 @@
-<table id="{{ $tableId = 'table_' . str_random() }}" class="table table-bordered table-striped table-hover" rel="datatables">
+<table id="{{ $tableId = 'table_' . str_random() }}" class="table table-bordered table-striped table-hover"
+       rel="datatables">
     <thead>
         <tr>
-            @foreach( $columns as $label => $value )
-                <th>{{ $label }}</th>
+            @foreach( $columns as $attribute )
+                <th>{{ trans('validation.attributes.' . $attribute) }}</th>
             @endforeach
             @if(isset($config['has_actions']))
                 <th>Actions</th>
@@ -13,8 +14,9 @@
 
     </tbody>
 </table>
+
 @push('scripts')
-<script type="text/javascript">
+    <script type="text/javascript">
     $(function () {
         var datatable = $("#{{ $tableId }}").DataTable({
             @if(isset($config['reorder_url']))
@@ -27,11 +29,15 @@
             serverSide: true,
             ajax: "{{ $config['ajax_url'] }}",
             columns: [
-                @foreach( $columns as $label => $value )
-                    {data: '{{ $value }}', name: '{{ $value }}'},
-                @endforeach
-                @if(isset($config['has_actions']))
-                    {data: 'actions', name: 'actions', searchable: false, orderable: false}
+                    @foreach( $columns as $attribute )
+                {
+                    data: '{{ $attribute }}', name: '{{ $attribute }}'
+                },
+                    @endforeach
+                    @if(isset($config['has_actions']))
+                {
+                    data: 'actions', name: 'actions', searchable: false, orderable: false
+                }
                 @endif
             ],
             language: {

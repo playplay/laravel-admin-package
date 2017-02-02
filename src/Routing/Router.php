@@ -26,4 +26,18 @@ class Router extends \Illuminate\Routing\Router
         $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm');
         $this->post('password/reset', 'Auth\ResetPasswordController@reset');
     }
+
+    /**
+     * Route a resource to a controller.
+     *
+     * @param  string  $name
+     * @param  string  $controller
+     * @param  array  $options
+     * @return void
+     */
+    public function resourceWithDatatables($name, $controller, array $options = [])
+    {
+        $registrar = new ResourceRegistrar($this);
+        $registrar->register($name, $controller, $options);
+    }
 }
