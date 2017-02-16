@@ -11,8 +11,8 @@
             <div class="login-box-body">
                 <p class="login-box-msg">Connexion</p>
                 {!! Form::open(['route' => 'admin.auth.login']) !!}
-                {!! AdminForm::hasFeedback('envelope')->email('email', false, null, ['placeholder' => 'Adresse email']) !!}
-                {!! AdminForm::hasFeedback('lock')->password('password', false, ['placeholder' => 'Mot de passe']) !!}
+                {!! AdminForm::hasFeedback('envelope')->email('email', false, null, ['placeholder' => trans('validation.attributes.email')]) !!}
+                {!! AdminForm::hasFeedback('lock')->password('password', false, ['placeholder' => trans('validation.attributes.password')]) !!}
                 <div class="row">
                     <div class="col-xs-8">
                         {!! AdminForm::checkbox('remember', 'Se souvenir de moi') !!}

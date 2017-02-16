@@ -11,7 +11,7 @@ class ViewHelpersServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(base_path('vendor/watson/bootstrap-form/src/config/config.php'), 'bootstrap_form');
         $this->publishes([
-            base_path('vendor/watson/bootstrap-form/src/config/config.php') => config_path('bootstrap_form.php')
+            base_path('vendor/watson/bootstrap-form/src/config/config.php') => config_path('bootstrap_form.php'),
         ], 'template');
     }
 

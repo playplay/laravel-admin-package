@@ -4,8 +4,8 @@ namespace LaravelAdminPackage\App\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
-use LaravelAdminPackage\App\Http\Controllers\Controller;
 use Illuminate\Validation\Factory as Validator;
+use LaravelAdminPackage\App\Http\Controllers\Controller;
 
 class RegisterController extends Controller
 {
@@ -51,39 +51,6 @@ class RegisterController extends Controller
     }
 
     /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param array $data
-     *
-     * @return \Illuminate\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        $table = (new $this->model)->getTable();
-        return $this->validator->make($data, [
-            'name'     => 'required|max:255',
-            'email'    => 'required|email|max:255|unique:' . $table,
-            'password' => 'required|min:6|confirmed',
-        ]);
-    }
-
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param array $data
-     *
-     * @return \Illuminate\Contracts\Auth\Authenticatable
-     */
-    protected function create(array $data)
-    {
-        return call_user_func($this->model . '::create', [
-            'name'     => $data['name'],
-            'email'    => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
-    }
-
-    /**
      * Show the application registration form.
      *
      * @return \Illuminate\Http\Response
@@ -93,6 +60,16 @@ class RegisterController extends Controller
         $this->checkIfRegistrationIsOpen();
 
         return view('admin::auth.register');
+    }
+
+    /**
+     * If registration is closed, deny access
+     */
+    private function checkIfRegistrationIsOpen()
+    {
+        if (!config('admin.is_registration_open')) {
+            abort(403, 'Les inscription sont fermées !');
+        }
     }
 
     /**
@@ -114,12 +91,36 @@ class RegisterController extends Controller
     }
 
     /**
-     * If registration is closed, deny access
+     * Get a validator for an incoming registration request.
+     *
+     * @param array $data
+     *
+     * @return \Illuminate\Validation\Validator
      */
-    private function checkIfRegistrationIsOpen()
+    protected function validator(array $data)
     {
-        if (!config('admin.is_registration_open')) {
-            abort(403, 'Les inscription sont fermées !');
-        }
+        $table = (new $this->model)->getTable();
+
+        return $this->validator->make($data, [
+            'name'     => 'required|max:255',
+            'email'    => 'required|email|max:255|unique:' . $table,
+            'password' => 'required|min:6|confirmed',
+        ]);
+    }
+
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @param array $data
+     *
+     * @return \Illuminate\Contracts\Auth\Authenticatable
+     */
+    protected function create(array $data)
+    {
+        return call_user_func($this->model . '::create', [
+            'name'     => $data['name'],
+            'email'    => $data['email'],
+            'password' => bcrypt($data['password']),
+        ]);
     }
 }

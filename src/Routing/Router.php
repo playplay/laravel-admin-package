@@ -30,9 +30,10 @@ class Router extends \Illuminate\Routing\Router
     /**
      * Route a resource to a controller.
      *
-     * @param  string  $name
-     * @param  string  $controller
+     * @param  string $name
+     * @param  string $controller
      * @param  array  $options
+     *
      * @return void
      */
     public function resourceWithDatatables($name, $controller, array $options = [])

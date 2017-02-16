@@ -2,7 +2,6 @@
 
 namespace LaravelAdminPackage\ServiceProviders;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use LaravelAdminPackage\Routing\Router;
 
@@ -14,18 +13,18 @@ class RouteServiceProvider extends ServiceProvider
     private $namePrefix = 'admin';
     private $middleware = 'web';
 
-    public function __construct(Application $app)
+    public function boot()
     {
-        $this->router = $app->make('router');
+        $this->router = app('router');
         $this->path = config('admin.path');
         $this->domain = config('admin.subdomain') ?
             config('admin.subdomain') . '.' . config('app.domain') :
             config('app.domain');
 
-        parent::__construct($app);
+        $this->mapRoutes();
     }
 
-    public function boot()
+    protected function mapRoutes()
     {
         $this->router->group([
             'middleware' => $this->middleware,

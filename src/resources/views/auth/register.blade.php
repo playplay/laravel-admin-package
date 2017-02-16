@@ -13,8 +13,8 @@
                 <p class="login-box-msg">Inscription</p>
                 {!! Form::open(['route' => 'admin.auth.register']) !!}
                 {!! AdminForm::hasFeedback('user')->text('name', false, null, ['placeholder' => 'Nom']) !!}
-                {!! AdminForm::hasFeedback('envelope')->email('email', false, null, ['placeholder' => 'Adresse email']) !!}
-                {!! AdminForm::hasFeedback('lock')->password('password', false, ['placeholder' => 'Mot de passe']) !!}
+                {!! AdminForm::hasFeedback('envelope')->email('email', false, null, ['placeholder' => trans('validation.attributes.email')]) !!}
+                {!! AdminForm::hasFeedback('lock')->password('password', false, ['placeholder' => trans('validation.attributes.password')]) !!}
                 {!! AdminForm::hasFeedback('lock')->password('password_confirmation', false, ['placeholder' => 'Confirmation']) !!}
                 <div class="row">
                     <div class="col-xs-8">

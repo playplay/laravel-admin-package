@@ -20,8 +20,8 @@
         <ul class="sidebar-menu">
             @if(true)
                 <li class="header">Administration</li>
-               {{-- <li class="{{areActiveRoutes('admin.home')}}"><a href="{{ route('admin.home') }}"><i
-                                class='fa fa-home'></i> <span>Dashboard</span></a></li>--}}
+                {{-- <li class="{{areActiveRoutes('admin.home')}}"><a href="{{ route('admin.home') }}"><i
+                                 class='fa fa-home'></i> <span>Dashboard</span></a></li>--}}
                 @php
                     $menu = [
                         'users' => [

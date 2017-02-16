@@ -7,14 +7,19 @@ use LaravelAdminPackage\Routing\Router;
 
 class MainServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function boot()
     {
+        $this->installPackage();
         $this->extendsRouter();
         $this->registerRoutes();
         $this->registerViewHelpers();
         $this->registerDatatables();
         $this->registerSwal();
-        $this->installPackage();
+    }
+
+    private function installPackage()
+    {
+        $this->app->register(InstallationServiceProvider::class);
     }
 
     private function extendsRouter()
@@ -42,10 +47,5 @@ class MainServiceProvider extends ServiceProvider
     private function registerSwal()
     {
         $this->app->register(\UxWeb\SweetAlert\SweetAlertServiceProvider::class);
-    }
-
-    private function installPackage()
-    {
-        $this->app->register(InstallationServiceProvider::class);
     }
 }

@@ -11,7 +11,8 @@ class InstallationServiceProvider extends ServiceProvider
     {
         $this->publishPackageFiles();
         $this->publishesTemplateFiles();
-        $this->loadViewsAndConfig();
+        $this->loadViews();
+        $this->mergeConfig();
     }
 
     private function publishPackageFiles()
@@ -27,50 +28,52 @@ class InstallationServiceProvider extends ServiceProvider
 
         // publish views
         $this->publishes([$this->packagePath('/resources/views') => resource_path('views/admin/')], 'views');
+    }
 
-        // publish admin assets
-        $this->publishes([$this->packagePath('/public') => public_path('admin')], 'public');
+    private function packagePath($path = '', $root = false)
+    {
+        return __DIR__ . '/../' . ($root ? '../' : '') . trim($path, '/');
     }
 
     private function publishesTemplateFiles($group = 'template')
     {
+        $this->publishes([$this->packagePath('/public') => public_path('assets/admin')], $group);
+
         $this->publishes([
-            base_path('vendor/almasaeed2010/adminlte/dist/js')  => public_path('admin/vendor/adminlte/js'),
-            base_path('vendor/almasaeed2010/adminlte/dist/css') => public_path('admin/vendor/adminlte/css'),
+            base_path('vendor/almasaeed2010/adminlte/dist/js')  => public_path('assets/admin/vendor/adminlte/js'),
+            base_path('vendor/almasaeed2010/adminlte/dist/css') => public_path('assets/admin/vendor/adminlte/css'),
         ], $group);
 
         $this->publishes([
-            base_path('vendor/almasaeed2010/adminlte/bootstrap/') => public_path('admin/vendor/bootstrap/'),
+            base_path('vendor/almasaeed2010/adminlte/bootstrap/') => public_path('assets/admin/vendor/bootstrap/'),
         ], $group);
 
         $this->publishes([
-            $this->packagePath('/public/vendor/swal/') => public_path('admin/vendor/swal'),
+            $this->packagePath('/public/vendor/swal/') => public_path('assets/admin/vendor/swal'),
         ], $group);
 
         $this->publishes([
-            base_path('vendor/fortawesome/font-awesome/css')   => public_path('admin/vendor/fa/css'),
-            base_path('vendor/fortawesome/font-awesome/fonts') => public_path('admin/vendor/fa/fonts'),
+            base_path('vendor/fortawesome/font-awesome/css')   => public_path('assets/admin/vendor/fa/css'),
+            base_path('vendor/fortawesome/font-awesome/fonts') => public_path('assets/admin/vendor/fa/fonts'),
         ], $group);
 
         $this->publishes([
-            base_path('vendor/almasaeed2010/adminlte/plugins/') => public_path('admin/vendor/plugins/'),
+            base_path('vendor/almasaeed2010/adminlte/plugins/') => public_path('assets/admin/vendor/plugins/'),
         ], $group);
     }
 
-    private function loadViewsAndConfig()
+    private function loadViews()
     {
         // - first the published views (in case they have any changes)
         $this->loadViewsFrom(resource_path('views/admin'), 'admin');
 
         // - then the stock views that come with the package, in case a published view might be missing
         $this->loadViewsFrom($this->packagePath('/resources/views'), 'admin');
-
-        // use the vendor configuration file as fallback
-        $this->mergeConfigFrom($this->packagePath('/config/admin.php'), 'admin');
     }
 
-    private function packagePath($path = '', $root = false)
+    private function mergeConfig()
     {
-        return __DIR__ . '/../' . ($root ? '../' : '') . trim($path, '/');
+        // use the package configuration file as fallback
+        $this->mergeConfigFrom($this->packagePath('/config/admin.php'), 'admin');
     }
 }

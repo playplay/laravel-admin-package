@@ -72,11 +72,48 @@ class Form extends BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        $formGroup =  $this->getFormGroup($name, $label, $wrapperElement);
+        $formGroup = $this->getFormGroup($name, $label, $wrapperElement);
 
         $this->resetInputOptions();
 
         return $formGroup;
+    }
+
+    protected function getLabelTitle($label, $name)
+    {
+        if ($label === false) {
+            return null;
+        }
+
+        if ($label === null && \Lang::has("validation.attributes.{$name}")) {
+            return \Lang::get("validation.attributes.{$name}");
+        }
+
+        return $label ?: str_replace('_', ' ', Str::title($name));
+    }
+
+    /**
+     * Get a form group with or without a label.
+     *
+     * @param  string $name
+     * @param  string $label
+     * @param  string $element
+     *
+     * @return string
+     */
+    public function getFormGroup($name = null, $label = null, $wrapperElement)
+    {
+        if ($this->withoutFormGroup) {
+            return $wrapperElement;
+        }
+
+        return parent::getFormGroup($name, $label, $wrapperElement);
+    }
+
+    private function resetInputOptions()
+    {
+        $this->feedbackIcon = null;
+        $this->withoutFormGroup = null;
     }
 
     /**
@@ -113,42 +150,6 @@ class Form extends BootstrapForm
         }
 
         return array_merge(['class' => $class], $options);
-    }
-
-    private function resetInputOptions()
-    {
-        $this->feedbackIcon = null;
-        $this->withoutFormGroup = null;
-    }
-
-    /**
-     * Get a form group with or without a label.
-     *
-     * @param  string  $name
-     * @param  string  $label
-     * @param  string  $element
-     * @return string
-     */
-    public function getFormGroup($name = null, $label = null, $wrapperElement)
-    {
-        if ($this->withoutFormGroup) {
-            return $wrapperElement;
-        }
-
-        return parent::getFormGroup($name, $label, $wrapperElement);
-    }
-
-    protected function getLabelTitle($label, $name)
-    {
-        if ($label === false) {
-            return null;
-        }
-
-        if ($label === null && \Lang::has("validation.attributes.{$name}")) {
-            return \Lang::get("validation.attributes.{$name}");
-        }
-
-        return $label ?: str_replace('_', ' ', Str::title($name));
     }
 
     /* TODO Image field with image preview :

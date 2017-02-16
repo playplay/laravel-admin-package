@@ -1,7 +1,7 @@
 @push('scripts')
 <script type="text/javascript">
     $(function () {
-        $(document).on('submit','form[rel="delete-button"]', function(event) {
+        $(document).on('submit', 'form[rel="delete-button"]', function (event) {
             event.preventDefault();
 
             var form = $(this), url = form.attr('action');
@@ -46,11 +46,10 @@
         });
     });
 
-    $.fn.serializeObject = function()
-    {
+    $.fn.serializeObject = function () {
         var o = {};
         var a = this.serializeArray();
-        $.each(a, function() {
+        $.each(a, function () {
             if (o[this.name]) {
                 if (!o[this.name].push) {
                     o[this.name] = [o[this.name]];

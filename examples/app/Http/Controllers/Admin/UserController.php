@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserStoreRequest;
 use App\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use LaravelAdminPackage\Html\Show;
 use Yajra\Datatables\Datatables;
 
@@ -45,13 +45,15 @@ class UserController extends Controller
         $user = User::create($request->all());
         alert()->success('<strong>' . $user->name . '</strong> a été créé avec succés.', 'C\'est tout bon !')
             ->html()->confirmButton()->autoclose(7000);
+
         return new JsonResponse(['success' => true], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -62,7 +64,8 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -73,8 +76,9 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -82,14 +86,13 @@ class UserController extends Controller
         //
     }
 
-
     public function destroy(User $user, Guard $auth)
     {
         if ($user->id === $auth->user()->id) {
             return response()->json([
-                'title' => 'Désolé',
+                'title'   => 'Désolé',
                 'message' => 'Vous ne pouvez pas vous supprimer vous même !',
-                'type' => 'error',
+                'type'    => 'error',
             ], 400);
         }
         $user->delete();
@@ -100,11 +103,10 @@ class UserController extends Controller
     public function datatables(Datatables $datatables, Show $htmlHelper)
     {
         return $datatables->eloquent(User::query())
-            ->addColumn('actions', function (User $user) use ($htmlHelper){
+            ->addColumn('actions', function (User $user) use ($htmlHelper) {
                 return $htmlHelper->open($user)->indexActions('name');
             })
             ->make(true);
     }
-
 
 }

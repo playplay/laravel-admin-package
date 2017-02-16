@@ -2,7 +2,7 @@
 /** @var \LaravelAdminPackage\Routing\Router $router */
 
 $router->get('/', function () {
-    return 'home';
+    return 'admin home';
 })->name('home');
 
 $router->resourceWithDatatables('users', 'UserController');

@@ -52,7 +52,7 @@
 
             // Request.
             $.ajax({
-                type: "POST",
+                type: 'POST',
                 url: url,
                 data: data,
                 dataType: 'json',

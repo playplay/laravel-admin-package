@@ -17,47 +17,18 @@
                 </div>
             @endif
 
-            @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <strong>Oups !</strong> Quelques problèmes avec les données insérées<br><br>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <div class="login-box-body">
                 <p class="login-box-msg">Réinitialiser le mot de passe</p>
                 {!! Form::open(['route' => 'admin.auth.passwordReset']) !!}
-                    <input type="hidden" name="token" value="{{ $token }}">
-                    <div class="form-group has-feedback">
-                        <input type="email" class="form-control" placeholder="Email" name="email"
-                               value="{{ old('email') }}"/>
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                    </div>
+                {!! AdminForm::hasFeedback('envelope')->email('email', false, null, ['placeholder' => 'Adresse email']) !!}
+                {!! AdminForm::hasFeedback('lock')->password('password', false, ['placeholder' => 'Mot de passe']) !!}
+                {!! AdminForm::hasFeedback('lock')->password('password_confirmation', false, ['placeholder' => 'Confirmation']) !!}
 
-                    <div class="form-group has-feedback">
-                        <input type="password" class="form-control" placeholder="Mot de passe" name="password"/>
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                <div class="row">
+                    <div class="col-xs-offset-3 col-xs-6">
+                        <button type="submit" class="btn btn-default btn-block btn-flat">Réinitialiser</button>
                     </div>
-
-                    <div class="form-group has-feedback">
-                        <input type="password" class="form-control" placeholder="Mot de passe"
-                               name="password_confirmation"/>
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xs-2">
-                        </div><!-- /.col -->
-                        <div class="col-xs-8">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">Réinitialiser</button>
-                        </div><!-- /.col -->
-                        <div class="col-xs-2">
-                        </div><!-- /.col -->
-                    </div>
+                </div>
                 {!! Form::close() !!}
 
                 <div class="row" style="margin-top: 0.5em">
@@ -73,17 +44,5 @@
             </div><!-- /.login-box-body -->
 
         </div><!-- /.login-box -->
-
-        @include('admin::layouts.partials.html.scripts_auth')
-
-        <script>
-            $(function () {
-                $('input').iCheck({
-                    checkboxClass: 'icheckbox_square-blue',
-                    radioClass: 'iradio_square-blue',
-                    increaseArea: '20%' // optional
-                });
-            });
-        </script>
     </body>
 @endsection

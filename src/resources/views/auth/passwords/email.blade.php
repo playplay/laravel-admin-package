@@ -17,30 +17,15 @@
                 </div>
             @endif
 
-            @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <strong>Oups !</strong> Quelques problèmes sont survenus :<br><br>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <div class="login-box-body">
                 <p class="login-box-msg">Réinitialiser le mot de passe</p>
                 {!! Form::open(['route' => 'admin.auth.passwordSendEmail']) !!}
-                    <div class="form-group has-feedback">
-                        <input type="email" class="form-control" placeholder="Email" name="email"
-                               value="{{ old('email') }}"/>
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                    </div>
+                {!! AdminForm::hasFeedback('envelope')->email('email', false, null, ['placeholder' => trans('validation.attributes.email')]) !!}
 
                 <div class="row">
                     <div class="col-xs-offset-3 col-xs-6">
                         <button type="submit" class="btn btn-default btn-block btn-flat">Envoyer le mail</button>
-                    </div><!-- /.col -->
+                    </div>
                 </div>
 
                 {!! Form::close() !!}
@@ -60,6 +45,5 @@
 
         </div><!-- /.login-box -->
 
-        @include('admin::layouts.partials.html.scripts_auth')
     </body>
 @endsection

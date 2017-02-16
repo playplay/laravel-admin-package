@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 
-@include('admin::layouts.partials.html.head')
+    @include('admin::layouts.partials.html.head')
 
-@yield('content')
+    @yield('content')
 
-@include('admin::layouts.partials.alerts')
+    @include('admin::layouts.partials.alerts')
 
 </html>

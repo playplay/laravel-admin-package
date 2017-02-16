@@ -16,9 +16,9 @@
 </table>
 
 @push('scripts')
-    <script type="text/javascript">
+<script type="text/javascript">
     $(function () {
-        var datatable = $("#{{ $tableId }}").DataTable({
+        var datatable = $('#{{ $tableId }}').DataTable({
             @if(isset($config['reorder_url']))
             rowReorder: {
                 update: false,
@@ -27,7 +27,7 @@
             @endif
             processing: true,
             serverSide: true,
-            ajax: "{{ $config['ajax_url'] }}",
+            ajax: '{{ $config['ajax_url'] }}',
             columns: [
                     @foreach( $columns as $attribute )
                 {
@@ -41,27 +41,27 @@
                 @endif
             ],
             language: {
-                processing: "Traitement en cours...",
-                info: "Affichage des {{ $config['vars'] }} _START_ &agrave; _END_ sur _TOTAL_ {{ $config['vars'] }}",
-                infoEmpty: "Aucun(e) {{ $config['var'] }} trouvé(e)",
-                infoFiltered: "(filtr&eacute; de _MAX_ {{ $config['vars'] }} au total)",
-                infoPostFix: "",
-                loadingRecords: "Chargement en cours...",
-                zeroRecords: "Aucun(e) {{ $config['var'] }} trouvé(e)",
-                emptyTable: "Aucun(e) {{ $config['var'] }} trouvé(e)",
+                processing: 'Traitement en cours...',
+                info: 'Affichage des {{ $config['vars'] }} _START_ &agrave; _END_ sur _TOTAL_ {{ $config['vars'] }}',
+                infoEmpty: 'Aucun(e) {{ $config['var'] }} trouvé(e)',
+                infoFiltered: '(filtr&eacute; de _MAX_ {{ $config['vars'] }} au total)',
+                infoPostFix: '',
+                loadingRecords: 'Chargement en cours...',
+                zeroRecords: 'Aucun(e) {{ $config['var'] }} trouvé(e)',
+                emptyTable: 'Aucun(e) {{ $config['var'] }} trouvé(e)',
                 paginate: {
-                    first: "<<",
-                    previous: "<",
-                    next: ">",
-                    last: ">>"
+                    first: '<<',
+                    previous: '<',
+                    next: '>',
+                    last: '>>'
                 },
                 aria: {
-                    sSortAscending: ": activer pour trier la colonne par ordre croissant",
-                    sSortDescending: ": activer pour trier la colonne par ordre d&eacute;croissant"
+                    sSortAscending: ': activer pour trier la colonne par ordre croissant',
+                    sSortDescending: ': activer pour trier la colonne par ordre d&eacute;croissant'
                 },
-                lengthMenu: "_MENU_",
-                search: "_INPUT_",
-                searchPlaceholder: "Recherche"
+                lengthMenu: '_MENU_',
+                search: '_INPUT_',
+                searchPlaceholder: 'Recherche'
             },
             fnDrawCallback: function (oSettings) {
                 if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
@@ -82,7 +82,7 @@
         @if(isset($config['reorder_url']))
             datatable.on('row-reorder', function (e, diff) {
             $.ajax({
-                url: "{{ $config['reorder_url'] }}",
+                url: '{{ $config['reorder_url'] }}',
                 type: 'POST',
                 data: JSON.stringify(diff),
                 headers: {
