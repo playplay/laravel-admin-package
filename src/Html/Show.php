@@ -101,8 +101,8 @@ class Show
         }
 
         if ($href) {
-            if (in_array($href, ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])) {
-                $href = 'Admin\\' . Str::studly(class_basename($model)) . 'Controller@' . $href;
+            if (starts_with($href, '@')) {
+                $href = 'Admin\\' . Str::studly(class_basename($model)) . 'Controller' . $href;
 
                 return action($href, $parameters);
             }
@@ -168,14 +168,14 @@ class Show
         return link_to($this->model->$attribute);
     }
 
-    public function emailAttribute($attribute)
+    public function emailAttribute($attribute = 'email')
     {
         return link_to('mailto:' . $this->model->$attribute, $this->model->$attribute);
     }
 
-    public function createButton($title = 'Ajouter', $options = [], $type = 'link')
+    public function createButton(array $options = [], $type = 'link', $title = 'Ajouter')
     {
-        return $this->button(['create', null], $title, $options, $type);
+        return $this->button(['@create', null], $title, $options, $type);
     }
 
     private function button($hrefWithParameters, $title, $options, $type)
@@ -185,12 +185,12 @@ class Show
         return $this->$method($hrefWithParameters, $title, $options);
     }
 
-    public function indexButton($title = 'Retour à la liste', $options = [], $type = 'link')
+    public function indexButton(array $options = [], $type = 'link', $title = 'Retour à la liste')
     {
-        return $this->button('index', $title, $options, $type);
+        return $this->button(['@index', null], $title, $options, $type);
     }
 
-    public function linkButton($hrefWithParameters, $title, $options = [])
+    public function linkButton($hrefWithParameters, $title, array $options = [])
     {
         $href = $this->makeUrl($hrefWithParameters);
         $options = array_merge(['class' => 'btn'], $options);
@@ -198,7 +198,7 @@ class Show
         return link_to($href, $title, $options, null, false);
     }
 
-    public function modalButton($hrefWithParameters, $title, $options = [])
+    public function modalButton($hrefWithParameters, $title, array $options = [])
     {
         $href = $this->makeUrl($hrefWithParameters);
         $options = array_merge(['data-toggle' => 'modal', 'data-target' => '#modal', 'href' => $href], $options);
@@ -209,24 +209,24 @@ class Show
 
     public function indexActions($nameAttribute = null)
     {
-        $output = $this->showButton('<i class="fa fa-eye"></i>', ['class' => 'btn btn-info btn-xs', 'style' => 'margin: 0 2px']);
-        $output .= $this->editButton('<i class="fa fa-edit"></i>', ['class' => 'btn btn-warning btn-xs', 'style' => 'margin: 0 2px']);
-        $output .= $this->deleteButton('<i class="fa fa-times"></i>', ['class' => 'btn btn-danger btn-xs', 'style' => 'margin: 0 2px'], $nameAttribute);
+        $output = $this->showButton(['class' => 'btn btn-info btn-xs', 'style' => 'margin: 0 2px'], 'link', '<i class="fa fa-eye"></i>');
+        $output .= $this->editButton(['class' => 'btn btn-warning btn-xs', 'style' => 'margin: 0 2px'], 'link', '<i class="fa fa-edit"></i>');
+        $output .= $this->deleteButton(['class' => 'btn btn-danger btn-xs', 'style' => 'margin: 0 2px'], '<i class="fa fa-times"></i>', $nameAttribute);
 
         return $output;
     }
 
-    public function showButton($title = 'Voir', $options = [], $type = 'link')
+    public function showButton(array $options = [], $type = 'link', $title = 'Voir')
     {
-        return $this->button('show', $title, $options, $type);
+        return $this->button('@show', $title, $options, $type);
     }
 
-    public function editButton($title = 'Editer', $options = [], $type = 'link')
+    public function editButton(array $options = [], $type = 'link', $title = 'Editer')
     {
-        return $this->button('edit', $title, $options, $type);
+        return $this->button('@edit', $title, $options, $type);
     }
 
-    public function deleteButton($title, $options = [], $nameAttribute = null, $redirect = null)
+    public function deleteButton(array $options = [], $title = 'Supprimer', $nameAttribute = null, $redirect = null)
     {
         $output = $this->form->open(['method' => 'delete', 'url' => $this->makeUrl('destroy'), 'rel' => 'delete-button', 'style' => 'display:inline']);
         if ($nameAttribute) {

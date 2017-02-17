@@ -56,9 +56,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        return view('admin.user.show', compact('user'));
     }
 
     /**
@@ -107,6 +107,22 @@ class UserController extends Controller
                 return $htmlHelper->open($user)->indexActions('name');
             })
             ->make(true);
+    }
+
+    public function logAs(User $user = null)
+    {
+        /*if ($user->id) {
+            session(['orig_user' => auth()->id()]);
+            auth()->login($user);
+        } else {
+            $id = session('orig_user');
+            $orig_user = User::find($id);
+            auth()->login($orig_user);
+        }
+
+        return redirect()->back();*/
+
+        return 'logAs : ' . $user->name;
     }
 
 }
