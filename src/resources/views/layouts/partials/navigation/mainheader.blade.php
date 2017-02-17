@@ -18,29 +18,30 @@
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-            @if (Auth::check())
-                {{--@if(session()->has('orig_user'))
-                    <li>{{ link_to_action('Admin\UserController@logAs', 'Repasser en tant qu\'admin ') }}</li>
-                @endif--}}
+                @if (auth()->check())
+                    @php($user = auth()->user())
+                    @if(session()->has('orig_user'))
+                        <li>{{ link_to_action('Admin\UserController@logAs', 'Repasser en tant qu\'admin ') }}</li>
+                    @endif
                 <!-- User Account Menu -->
                     <li class="dropdown user user-menu">
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-user"></i>
+                            <i class="fa fa-user"></i> {{ $user->name }}
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
                             <li class="user-header">
-                                <img src="{{ '' }}" class="img-circle" alt="User Image"/>
+                                {{--<img src="{{ '' }}" class="img-circle" alt="User Image"/>--}}
                                 <p>
-                                    {{ Auth::user()->name }}
-                                    <small>{{ Auth::user()->email }}</small>
+                                    {{ $user->name }}
+                                    <small>{{ $user->email }}</small>
                                 </p>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Mon compte</a>
+                                    <a href="{{ route('admin.users.show', $user) }}" class="btn btn-default btn-flat">Mon compte</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="{{ route('admin.auth.logout') }}" class="btn btn-default btn-flat">Déconnexion</a>

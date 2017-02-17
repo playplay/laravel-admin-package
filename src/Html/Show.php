@@ -228,7 +228,7 @@ class Show
 
     public function deleteButton(array $options = [], $title = 'Supprimer', $nameAttribute = null, $redirect = null)
     {
-        $output = $this->form->open(['method' => 'delete', 'url' => $this->makeUrl('destroy'), 'rel' => 'delete-button', 'style' => 'display:inline']);
+        $output = $this->form->open(['method' => 'delete', 'url' => $this->makeUrl('@destroy'), 'rel' => 'delete-button', 'style' => 'display:inline']);
         if ($nameAttribute) {
             $output .= $this->form->hidden('name', $this->model->$nameAttribute);
         }

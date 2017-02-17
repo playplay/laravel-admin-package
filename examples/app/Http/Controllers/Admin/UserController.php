@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserStoreRequest;
+use App\Http\Requests\Admin\UserUpdateRequest;
 use App\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Session\Store;
 use LaravelAdminPackage\Html\Show;
 use Yajra\Datatables\Datatables;
 
@@ -68,9 +69,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        return view('admin.user.edit', compact('user'));
     }
 
     /**
@@ -81,14 +82,19 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        //
+        $user->update(array_filter($request->all()));
+
+        alert()->success('<strong>' . $user->name . '</strong> a été modifié avec succés.', 'C\'est tout bon !')
+            ->html()->confirmButton()->autoclose(7000);
+
+        return redirect()->back();
     }
 
     public function destroy(User $user, Guard $auth)
     {
-        if ($user->id === $auth->user()->id) {
+        if ($user->id === $auth->id()) {
             return response()->json([
                 'title'   => 'Désolé',
                 'message' => 'Vous ne pouvez pas vous supprimer vous même !',
@@ -109,20 +115,23 @@ class UserController extends Controller
             ->make(true);
     }
 
-    public function logAs(User $user = null)
+    public function logAs(User $user = null, Store $session, Guard $auth)
     {
-        /*if ($user->id) {
-            session(['orig_user' => auth()->id()]);
-            auth()->login($user);
-        } else {
-            $id = session('orig_user');
-            $orig_user = User::find($id);
-            auth()->login($orig_user);
+        if ($user->exists && $user->id === $auth->id()) {
+            alert()->error('Vous ne pouvez pas vous connectez en tant que... vous !', 'Et non !')
+                ->html()->confirmButton()->autoclose(7000);
+
+            return redirect()->back();
         }
 
-        return redirect()->back();*/
+        if ($user->exists) {
+            $session->put('orig_user', $auth->id());
+            auth()->login($user);
+        } else {
+            auth()->loginUsingId($session->pull('orig_user'));
+        }
 
-        return 'logAs : ' . $user->name;
+        return redirect()->back();
     }
 
 }
