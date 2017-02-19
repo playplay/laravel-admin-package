@@ -7,6 +7,9 @@ use Collective\Html\HtmlBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Route;
+use Spatie\Menu\Laravel\Html;
+use Spatie\Menu\Laravel\Link;
+use Spatie\Menu\Laravel\Menu;
 
 class Show
 {
@@ -242,4 +245,30 @@ class Show
         return $output;
     }
 
+    public function menu(string $name, $header = null, string $class = '')
+    {
+        $contents = collect(config('menus.' . $name))
+            ->map(function (array $item): Link {
+                [$route, $label] = $item;
+
+                if (is_array($label)) {
+                    [$label, $fontAwesomeClass] = $label;
+                    $label = '<i class="fa fa-' . $fontAwesomeClass . '"></i> <span>' . $label . '</span>';
+                }
+
+                if (is_array($route)) {
+                    [$route, $parameters] = $route;
+                }
+
+                return Link::toRoute($route, $label, $parameters ?? null);
+            });
+
+        if ($header) {
+            $contents->prepend(Html::raw($header)->addParentClass('header'));
+        }
+
+        return Menu::new($contents->toArray())
+            ->addClass($class)
+            ->setActiveFromRequest('admin/');
+    }
 }

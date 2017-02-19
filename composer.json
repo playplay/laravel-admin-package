@@ -9,7 +9,8 @@
         "almasaeed2010/AdminLTE": "2.3.*",
         "watson/bootstrap-form": "^1.1",
         "fortawesome/font-awesome": "^4.7",
-        "yajra/laravel-datatables-oracle": "^6.24"
+        "yajra/laravel-datatables-oracle": "^6.24",
+        "spatie/laravel-menu": "^2.1"
     },
     "require-dev": {
         "phpunit/phpunit": "4.*"

@@ -75,5 +75,6 @@ class InstallationServiceProvider extends ServiceProvider
     {
         // use the package configuration file as fallback
         $this->mergeConfigFrom($this->packagePath('/config/admin.php'), 'admin');
+        $this->mergeConfigFrom($this->packagePath('/config/menus.php'), 'menus');
     }
 }

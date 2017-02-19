@@ -15,6 +15,7 @@ class MainServiceProvider extends ServiceProvider
         $this->registerViewHelpers();
         $this->registerDatatables();
         $this->registerSwal();
+        $this->registerMenu();
     }
 
     private function installPackage()
@@ -47,5 +48,10 @@ class MainServiceProvider extends ServiceProvider
     private function registerSwal()
     {
         $this->app->register(\UxWeb\SweetAlert\SweetAlertServiceProvider::class);
+    }
+
+    private function registerMenu()
+    {
+        $this->app->register(\Spatie\Menu\Laravel\MenuServiceProvider::class);
     }
 }
