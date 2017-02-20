@@ -249,15 +249,15 @@ class Show
     {
         $contents = collect(config('menus.' . $name))
             ->map(function (array $item): Link {
-                [$route, $label] = $item;
+                list($route, $label) = $item;
 
                 if (is_array($label)) {
-                    [$label, $fontAwesomeClass] = $label;
+                    list($label, $fontAwesomeClass) = $label;
                     $label = '<i class="fa fa-' . $fontAwesomeClass . '"></i> <span>' . $label . '</span>';
                 }
 
                 if (is_array($route)) {
-                    [$route, $parameters] = $route;
+                    list($route, $parameters) = $route;
                 }
 
                 return Link::toRoute($route, $label, $parameters ?? null);
