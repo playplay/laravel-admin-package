@@ -138,8 +138,10 @@ class UserController extends Controller
 
             $session->put('orig_user', $auth->user());
             auth()->login($user);
-        } else {
+        } elseif ($session->has('orig_user')) {
             auth()->login($session->pull('orig_user'));
+        } else {
+            throw new \InvalidArgumentException('No origin user in session.');
         }
 
         return redirect()->back();
