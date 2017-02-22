@@ -4,6 +4,7 @@ namespace LaravelAdminPackage\Html;
 
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Route;
@@ -16,17 +17,20 @@ class Show
     private $model;
     private $form;
     private $html;
+    private $gate;
 
     /**
      * Construct the class.
      *
      * @param  \Collective\Html\HtmlBuilder $html
      * @param  \Collective\Html\FormBuilder $form
+     * @param \Illuminate\Auth\Access\Gate  $gate
      */
-    public function __construct(HtmlBuilder $html, FormBuilder $form)
+    public function __construct(HtmlBuilder $html, FormBuilder $form, Gate $gate)
     {
         $this->html = $html;
         $this->form = $form;
+        $this->gate = $gate;
     }
 
     public function open($model)
@@ -64,7 +68,7 @@ class Show
 
     public function reset()
     {
-        $clean = new self($this->html, $this->form);
+        $clean = new self($this->html, $this->form, $this->gate);
         foreach ($this as $key => $val) {
             if (property_exists($clean, $key)) {
                 $this->$key = $clean->$key;
@@ -178,7 +182,9 @@ class Show
 
     public function createButton(array $options = [], $type = 'link', $title = 'Ajouter')
     {
-        return $this->button(['@create', null], $title, $options, $type);
+        if ($this->gate->allows('create', [$this->model])) {
+            return $this->button(['@create', null], $title, $options, $type);
+        }
     }
 
     private function button($hrefWithParameters, $title, $options, $type)
@@ -190,7 +196,9 @@ class Show
 
     public function indexButton(array $options = [], $type = 'link', $title = 'Retour à la liste')
     {
-        return $this->button(['@index', null], $title, $options, $type);
+        if ($this->gate->allows('list', [$this->model])) {
+            return $this->button(['@index', null], $title, $options, $type);
+        }
     }
 
     public function linkButton($hrefWithParameters, $title, array $options = [])
@@ -221,33 +229,42 @@ class Show
 
     public function showButton(array $options = [], $type = 'link', $title = 'Voir')
     {
-        return $this->button('@show', $title, $options, $type);
+        if ($this->gate->allows('view', [$this->model])) {
+            return $this->button('@show', $title, $options, $type);
+        }
     }
 
     public function editButton(array $options = [], $type = 'link', $title = 'Editer')
     {
-        return $this->button('@edit', $title, $options, $type);
+        if ($this->gate->allows('update', [$this->model])) {
+            return $this->button('@edit', $title, $options, $type);
+        }
     }
 
     public function deleteButton(array $options = [], $title = 'Supprimer', $nameAttribute = null, $redirect = null)
     {
-        $output = $this->form->open(['method' => 'delete', 'url' => $this->makeUrl('@destroy'), 'rel' => 'delete-button', 'style' => 'display:inline']);
-        if ($nameAttribute) {
-            $output .= $this->form->hidden('name', $this->model->$nameAttribute);
-        }
-        if ($redirect) {
-            $output .= $this->form->hidden('redirect', $this->makeUrl($redirect));
-        }
+        if ($this->gate->allows('delete', [$this->model])) {
+            $output = $this->form->open(['method' => 'delete', 'url' => $this->makeUrl('@destroy'), 'rel' => 'delete-button', 'style' => 'display:inline']);
+            if ($nameAttribute) {
+                $output .= $this->form->hidden('name', $this->model->$nameAttribute);
+            }
+            if ($redirect) {
+                $output .= $this->form->hidden('redirect', $this->makeUrl($redirect));
+            }
 
-        $output .= $this->form->button($title, array_merge(['class' => 'btn', 'type' => 'submit'], $options));
-        $output .= $this->form->close();
+            $output .= $this->form->button($title, array_merge(['class' => 'btn', 'type' => 'submit'], $options));
+            $output .= $this->form->close();
 
-        return $output;
+            return $output;
+        }
     }
 
     public function menu(string $name, $header = null, string $class = '')
     {
         $contents = collect(config('menus.' . $name))
+            ->filter(function (array $item) {
+                return !isset($item[2]) || $this->gate->allows($item[2]);
+            })
             ->map(function (array $item): Link {
                 list($route, $label) = $item;
 
@@ -258,10 +275,15 @@ class Show
 
                 if (is_array($route)) {
                     list($route, $parameters) = $route;
+                    $parameters = is_callable($parameters) ? $parameters() : $parameters;
                 }
 
                 return Link::toRoute($route, $label, $parameters ?? null);
             });
+
+        if ($contents->isEmpty()) {
+            return null;
+        }
 
         if ($header) {
             $contents->prepend(Html::raw($header)->addParentClass('header'));

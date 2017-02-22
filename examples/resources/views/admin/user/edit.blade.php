@@ -4,7 +4,6 @@
 @section('contentheader.title', 'Users')
 @section('contentheader.description', 'Show')
 @section('contentheader.elements')
-    {!! AdminShow::linkButton('@logAs','Se connecter en tant que', ['class' => 'btn btn-default btn-sm']) !!}
     {!! AdminShow::indexButton(['class' => 'btn btn-default btn-sm']) !!}
     {!! AdminShow::showButton(['class' => 'btn btn-default btn-sm']) !!}
 @endsection
@@ -20,6 +19,9 @@
                     {!! AdminForm::email('email' , null, null, $options) !!}
                     {!! AdminForm::password('password', null, $options) !!}
                     {!! AdminForm::password('password_confirmation', null, $options) !!}
+                    @role('admin')
+                        {!! AdminForm::checkbox('is_admin') !!}
+                    @endrole
                     <br>
                     <div class="form-group pull-right">
                         {!! Form::reset('Réinitialiser', ['class' => 'btn btn-default']) !!}

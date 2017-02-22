@@ -2,7 +2,7 @@
 @section('contentheader.title', 'Users')
 @section('contentheader.description', 'Index')
 @section('contentheader.elements')
-    {!! AdminShow::open(App\User::class)->createButton(['class' => 'btn btn-default btn-sm'], 'modal') !!}
+    {!! AdminShow::open(App\Models\User::class)->createButton(['class' => 'btn btn-default btn-sm'], 'modal') !!}
 @endsection
 
 
@@ -14,6 +14,7 @@
                 'columns' => [
                     'name',
                     'email',
+                    'is_admin' => ['searchable' => false, 'orderable' => false],
                     'created_at',
                 ],
                 'config' => [

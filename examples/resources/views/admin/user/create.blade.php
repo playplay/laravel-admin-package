@@ -11,6 +11,9 @@
         {!! AdminForm::email() !!}
         {!! AdminForm::password() !!}
         {!! AdminForm::password('password_confirmation') !!}
+        @role('admin')
+            {!! AdminForm::checkbox('is_admin') !!}
+        @role
     </div>
 </div>
 <div class="modal-footer">

@@ -1,13 +1,14 @@
+{{--
+    $columnsNames and $columnsJson are automatically injected from
+    \LaravelAdminPackage\ServiceProviders\ViewHelpersServiceProvider::addViewComposers
+--}}
 <table id="{{ $tableId = 'table_' . str_random() }}" class="table table-bordered table-striped table-hover"
        rel="datatables">
     <thead>
         <tr>
-            @foreach( $columns as $attribute )
-                <th>{{ trans('validation.attributes.' . $attribute) }}</th>
+            @foreach( $columnsNames as $column )
+                <th>{{ trans('validation.attributes.' . $column) }}</th>
             @endforeach
-            @if(isset($config['has_actions']))
-                <th>Actions</th>
-            @endif
         </tr>
     </thead>
     <tbody>
@@ -16,6 +17,7 @@
 </table>
 
 @push('scripts')
+
 <script type="text/javascript">
     $(function () {
         var datatable = $('#{{ $tableId }}').DataTable({
@@ -28,18 +30,7 @@
             processing: true,
             serverSide: true,
             ajax: '{{ $config['ajax_url'] }}',
-            columns: [
-                    @foreach( $columns as $attribute )
-                {
-                    data: '{{ $attribute }}', name: '{{ $attribute }}'
-                },
-                    @endforeach
-                    @if(isset($config['has_actions']))
-                {
-                    data: 'actions', name: 'actions', searchable: false, orderable: false
-                }
-                @endif
-            ],
+            columns: {!! $columnsJson !!},
             language: {
                 processing: 'Traitement en cours...',
                 info: 'Affichage des {{ $config['vars'] }} _START_ &agrave; _END_ sur _TOTAL_ {{ $config['vars'] }}',

@@ -4,7 +4,9 @@
 @section('contentheader.title', 'Users')
 @section('contentheader.description', 'Show')
 @section('contentheader.elements')
-    {!! AdminShow::linkButton('@logAs','Se connecter en tant que', ['class' => 'btn btn-default btn-sm']) !!}
+    @can('log-as')
+        {!! AdminShow::linkButton('@logAs','Se connecter en tant que', ['class' => 'btn btn-default btn-sm']) !!}
+    @endcan
     {!! AdminShow::indexButton(['class' => 'btn btn-default btn-sm']) !!}
     {!! AdminShow::editButton(['class' => 'btn btn-default btn-sm']) !!}
 @endsection

@@ -21,7 +21,7 @@
                 @if (auth()->check())
                     @php($user = auth()->user())
                     @if(session()->has('orig_user'))
-                        <li>{{ link_to_action('Admin\UserController@logAs', 'Repasser en tant qu\'admin ') }}</li>
+                        <li>{{ link_to_action('Admin\UserController@logAs', 'Revenir à ' . session('orig_user')->name) }}</li>
                     @endif
                 <!-- User Account Menu -->
                     <li class="dropdown user user-menu">

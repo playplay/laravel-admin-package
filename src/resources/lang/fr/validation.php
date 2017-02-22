@@ -150,6 +150,8 @@ return [
         'color'                 => 'Couleur',
         'price'                 => 'Prix',
         'type'                  => 'Type',
+        'is_admin'              => 'Est admin',
+        'actions'               => 'Actions',
     ],
 
 ];

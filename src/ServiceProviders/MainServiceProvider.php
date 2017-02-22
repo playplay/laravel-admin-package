@@ -16,6 +16,7 @@ class MainServiceProvider extends ServiceProvider
         $this->registerDatatables();
         $this->registerSwal();
         $this->registerMenu();
+        $this->registerPermission();
     }
 
     private function installPackage()
@@ -53,5 +54,10 @@ class MainServiceProvider extends ServiceProvider
     private function registerMenu()
     {
         $this->app->register(\Spatie\Menu\Laravel\MenuServiceProvider::class);
+    }
+
+    private function registerPermission()
+    {
+        $this->app->register(\Spatie\Permission\PermissionServiceProvider::class);
     }
 }

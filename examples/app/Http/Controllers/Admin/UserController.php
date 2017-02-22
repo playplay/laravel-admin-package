@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserStoreRequest;
 use App\Http\Requests\Admin\UserUpdateRequest;
-use App\User;
+use App\Models\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Session\Store;
@@ -14,6 +14,12 @@ use Yajra\Datatables\Datatables;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(User::class);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -109,6 +115,9 @@ class UserController extends Controller
     public function datatables(Datatables $datatables, Show $htmlHelper)
     {
         return $datatables->eloquent(User::query())
+            ->editColumn('is_admin', function (User $user) use ($htmlHelper) {
+                return $htmlHelper->open($user)->booleanAttribute('is_admin');
+            })
             ->addColumn('actions', function (User $user) use ($htmlHelper) {
                 return $htmlHelper->open($user)->indexActions('name');
             })
@@ -117,21 +126,22 @@ class UserController extends Controller
 
     public function logAs(User $user = null, Store $session, Guard $auth)
     {
-        if ($user->exists && $user->id === $auth->id()) {
-            alert()->error('Vous ne pouvez pas vous connectez en tant que... vous !', 'Et non !')
-                ->html()->confirmButton()->autoclose(7000);
-
-            return redirect()->back();
-        }
-
         if ($user->exists) {
-            $session->put('orig_user', $auth->id());
+            $this->authorize('log-as');
+
+            if ($user->id === $auth->id()) {
+                alert()->error('Vous ne pouvez pas vous connectez en tant que... vous !', 'Et non !')
+                    ->html()->confirmButton()->autoclose(7000);
+
+                return redirect()->back();
+            }
+
+            $session->put('orig_user', $auth->user());
             auth()->login($user);
         } else {
-            auth()->loginUsingId($session->pull('orig_user'));
+            auth()->login($session->pull('orig_user'));
         }
 
         return redirect()->back();
     }
-
 }

@@ -2,17 +2,52 @@
 
 namespace LaravelAdminPackage\ServiceProviders;
 
+use Illuminate\Contracts\Auth\Access\Gate;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\View;
 
 class ViewHelpersServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(ViewFactory $viewFactory)
     {
         $this->mergeConfigFrom(base_path('vendor/watson/bootstrap-form/src/config/config.php'), 'bootstrap_form');
         $this->publishes([
             base_path('vendor/watson/bootstrap-form/src/config/config.php') => config_path('bootstrap_form.php'),
         ], 'template');
+
+        $this->addViewComposers($viewFactory);
+    }
+
+    private function addViewComposers(ViewFactory $factory)
+    {
+        $factory->composer(['admin::partials.datatables'], function (View $view) {
+            $columns = collect($view->getData()['columns'])
+                ->map(function ($attribute, $key) {
+                    if (is_string($key) && is_array($attribute)) {
+                        $parameters = $attribute;
+                        $attribute = $key;
+                    }
+
+                    return ['data' => $attribute, 'name' => $attribute] + ($parameters ?? []);
+                })->values();
+
+            $config = $view->getData()['config'];
+            if (isset($config['has_actions']) && $config['has_actions']) {
+                $columns = $columns->merge([[
+                    'data'       => 'actions',
+                    'name'       => 'actions',
+                    'searchable' => false,
+                    'orderable'  => false,
+                ]]);
+            }
+
+            return $view->with([
+                'columnsNames' => $columns->pluck('name'),
+                'columnsJson' => $columns->toJson(),
+            ]);
+        });
     }
 
     public function register()
@@ -40,7 +75,7 @@ class ViewHelpersServiceProvider extends ServiceProvider
     private function registerShow()
     {
         $this->app->singleton('admin_show', function ($app) {
-            return new \LaravelAdminPackage\Html\Show($app['html'], $app['form']);
+            return new \LaravelAdminPackage\Html\Show($app['html'], $app['form'], app(Gate::class));
         });
         AliasLoader::getInstance()->alias('AdminForm', \LaravelAdminPackage\Facades\Form::class);
     }
