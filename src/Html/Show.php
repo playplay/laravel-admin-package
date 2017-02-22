@@ -4,7 +4,7 @@ namespace LaravelAdminPackage\Html;
 
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
-use Illuminate\Auth\Access\Gate;
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Route;
