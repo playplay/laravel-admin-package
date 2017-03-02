@@ -7,3 +7,7 @@ $router->get('/', function () {
 
 $router->get('log_as/{user?}', 'UserController@logAs');
 $router->resourceWithDatatables('users', 'UserController');
+
+$router->resource('roles', 'RoleController');
+
+$router->delete('permissions/delete', 'PermissionController@destroyMany')->name('permissions.delete');

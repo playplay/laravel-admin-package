@@ -2,33 +2,16 @@
 
 namespace LaravelAdminPackage\App\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
-    protected function action($method, $parameters = [])
-    {
-        return action('\\' . static::class . '@' . $method, $parameters);
-    }
-
-    protected function resourceAbilityMap()
-    {
-        return [
-            'index'      => 'list',
-            'datatables' => 'list',
-            'show'       => 'view',
-            'create'     => 'create',
-            'store'      => 'create',
-            'edit'       => 'update',
-            'update'     => 'update',
-            'destroy'    => 'delete',
-        ];
-    }
 
     public function authorizeResource($model, $parameter = null, array $options = [], $request = null)
     {
@@ -47,8 +30,38 @@ class Controller extends BaseController
         }
     }
 
-    public function methodsWithoutParameters()
+    protected function resourceAbilityMap()
+    {
+        return [
+            'index'      => 'list',
+            'datatables' => 'list',
+            'show'       => 'view',
+            'create'     => 'create',
+            'store'      => 'create',
+            'edit'       => 'update',
+            'update'     => 'update',
+            'destroy'    => 'delete',
+        ];
+    }
+
+    protected function methodsWithoutParameters()
     {
         return ['index', 'datatables', 'create', 'store'];
     }
+
+    protected function action($method, $parameters = [])
+    {
+        return action('\\' . static::class . '@' . $method, $parameters);
+    }
+
+    protected function ajaxDelete(Model $model)
+    {
+        if ($model->delete()) {
+            return new JsonResponse(['success' => true]);
+        }
+
+        abort(500, 'Not deleted!');
+    }
+
+
 }

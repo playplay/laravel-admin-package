@@ -17,10 +17,9 @@ class Form extends BootstrapForm
         return parent::select($name, $label, $list, $selected, $options);
     }
 
-    public function tags($name, $label = null, $list = [], $selected = null, array $options = [])
+    public function tags($name, $label = null, $list = [], $selected = null, array $options = [], $creating = false)
     {
-        $options = array_merge(['rel' => 'taginput', 'multiple'], $options);
-
+        $options = array_merge(['rel' => 'taginput', 'multiple', 'data-tags' => var_export($creating, true)], $options);
         return parent::select($name, $label, $list, $selected, $options);
     }
 

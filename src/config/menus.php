@@ -17,6 +17,7 @@ return [
     ],
     'sidebar-admin' => [
         ['admin.users.index', ['Utilisateurs', 'users'], 'manage-users'],
+        ['admin.roles.index', ['Roles et Permissions', 'wrench'], 'manage-roles'],
     ],
 
 ];

@@ -17,7 +17,7 @@ class UserPolicy
 
         if (in_array($ability, ['view', 'update'])) {
             /** @var User $user */
-            return $authUser->id === $user->id;
+            return $authUser->is($user);
         };
     }
 }

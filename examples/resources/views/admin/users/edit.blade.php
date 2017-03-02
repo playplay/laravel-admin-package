@@ -13,15 +13,13 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
-                    @php($options = ['style' => 'margin-left:20px'])
                     {!! AdminForm::open(['model' => $user, 'update' => 'Admin\\UserController@update']) !!}
-                    {!! AdminForm::text('name', null, null, $options) !!}
-                    {!! AdminForm::email('email' , null, null, $options) !!}
-                    {!! AdminForm::password('password', null, $options) !!}
-                    {!! AdminForm::password('password_confirmation', null, $options) !!}
-                    @role('admin')
-                        {!! AdminForm::checkbox('is_admin') !!}
-                    @endrole
+                    {!! AdminForm::text('name') !!}
+                    {!! AdminForm::email() !!}
+                    {!! AdminForm::password() !!}
+                    {!! AdminForm::password('password_confirmation') !!}
+                    @can('manage-role')
+
                     <br>
                     <div class="form-group pull-right">
                         {!! Form::reset('Réinitialiser', ['class' => 'btn btn-default']) !!}
@@ -33,3 +31,12 @@
         </div>
     </div>
 @endsection
+
+@push('styles')
+<style>
+    .form-control {
+        margin-left: 3%;
+        width: 94%;
+    }
+</style>
+@endpush

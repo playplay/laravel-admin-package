@@ -16,4 +16,12 @@ abstract class BaseModel extends Model
         return $related->{$related->getKeyName()} === $this->{$related->getForeignKey()};
     }
 
+    public function getTitle() {
+        if (($value = $this->title) || ($value = $this->name)) {
+            return $value;
+        }
+
+        throw new \BadMethodCallException('No "getTitle()", "title" or "name" provided for ' . static::class . '!');
+    }
+
 }

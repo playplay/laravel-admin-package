@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Session\Store;
 use LaravelAdminPackage\Html\Show;
+use Spatie\Permission\Models\Permission;
 use Yajra\Datatables\Datatables;
 
 class UserController extends Controller
@@ -27,7 +28,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('admin.user.index');
+        return view('admin.users.index');
     }
 
     /**
@@ -37,7 +38,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.user.create');
+        return view('admin.users.create');
     }
 
     /**
@@ -65,7 +66,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('admin.user.show', compact('user'));
+        return view('admin.users.show', compact('user'));
     }
 
     /**
@@ -77,7 +78,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('admin.user.edit', compact('user'));
+        return view('admin.users.edit', compact('user'));
     }
 
     /**
@@ -100,16 +101,15 @@ class UserController extends Controller
 
     public function destroy(User $user, Guard $auth)
     {
-        if ($user->id === $auth->id()) {
+        if ($user->is($auth->user())) {
             return response()->json([
                 'title'   => 'Désolé',
                 'message' => 'Vous ne pouvez pas vous supprimer vous même !',
                 'type'    => 'error',
             ], 400);
         }
-        $user->delete();
 
-        return new JsonResponse(['success' => true]);
+        return $this->ajaxDelete($user);
     }
 
     public function datatables(Datatables $datatables, Show $htmlHelper)

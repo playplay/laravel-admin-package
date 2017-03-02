@@ -5,7 +5,11 @@
     position: relative;
 }
 
-.panel.infolist .form-group {
+.infolist {
+    padding: 0;
+}
+
+.infolist .form-group {
     border-bottom: 1px dashed #e2e4e8;
     padding-bottom: 9px;
     min-height: 35px;
@@ -13,14 +17,37 @@
     height: auto;
     overflow-y: auto;
 }
-.panel.infolist .form-group .fvalue {
+.infolist .form-group .fvalue {
     padding: 0px 10px 5px 10px;
 }
-.panel.infolist .form-group:last-child {
+.infolist .form-group:last-child {
     border-bottom: 0px;
     margin-bottom: 0px;
     padding-bottom: 0px;
 }
-.panel.infolist .form-group:first-child {
+.infolist .form-group:first-child {
     margin-top: 10px;
+}
+
+.nav-stacked > li > button {
+    border: none;
+    background: none;
+    border-radius: 0;
+    border-top: 0;
+    border-left: 3px solid transparent;
+    color: #444;
+    display: block;
+    padding: 10px 15px;
+}
+
+.checkbox-inline + .checkbox-inline, .radio-inline + .radio-inline {
+    margin-left: 0;
+}
+
+.checkbox-inline, .radio-inline {
+    margin-right: 10px;
+}
+
+.checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"], .radio input[type="radio"], .radio-inline input[type="radio"] {
+    margin-left: -17px;
 }
