@@ -129,7 +129,7 @@ class Show
             return url($href);
         }
 
-        return action('Admin\\' . Str::studly($model) . 'Controller@show', $parameters);
+        return action('Admin\\' . Str::studly(class_basename($model)) . 'Controller@show', $parameters);
     }
 
     public function dateAttribute($attribute)
