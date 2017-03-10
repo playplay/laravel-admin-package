@@ -85,11 +85,15 @@ class Show
         $this->reset();
     }
 
-    public function relationAttribute($relation, $relation_title_attribute, $actionOrRoute = null)
+    public function relationAttribute($relation, $relation_title_attribute, $default = null, $actionOrRoute = null)
     {
-        $url = $this->makeUrl([$actionOrRoute, $this->model->$relation->id], $relation);
+        if (!($relation = $this->model->$relation)) {
+            return $default;
+        }
 
-        return link_to($url, $this->model->$relation->$relation_title_attribute);
+        $url = $this->makeUrl([$actionOrRoute, $relation->id], $relation);
+
+        return link_to($url, $relation->$relation_title_attribute);
     }
 
     private function makeUrl($hrefWithParameters = null, $model = null)
