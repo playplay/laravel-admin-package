@@ -30,7 +30,7 @@ class ViewHelpersServiceProvider extends ServiceProvider
                         $attribute = $key;
                     }
 
-                    return ['data' => $attribute, 'name' => $attribute] + ($parameters ?? []);
+                    return array_merge(['data' => $attribute, 'name' => $attribute], ($parameters ?? []));
                 })->values();
 
             $config = $view->getData()['config'];
