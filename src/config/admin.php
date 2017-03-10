@@ -14,7 +14,7 @@ return [
     'path'                 => 'admin',
 
     // Fully qualified namespace of the User model
-    'user_model_fqn'       => '\App\Model\User',
+    'user_model_fqn'       => '\App\Models\User',
 
     // Should we use the default package auth routes and controllers?
     'use_default_auth'     => true,
