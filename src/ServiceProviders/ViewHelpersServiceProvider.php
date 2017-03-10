@@ -44,7 +44,7 @@ class ViewHelpersServiceProvider extends ServiceProvider
             }
 
             return $view->with([
-                'columnsNames' => $columns->pluck('name'),
+                'columnsNames' => $columns->pluck('data'),
                 'columnsJson' => $columns->toJson(),
             ]);
         });
