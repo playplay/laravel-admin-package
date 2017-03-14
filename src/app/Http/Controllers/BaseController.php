@@ -64,15 +64,29 @@ abstract class BaseController extends LaravelController
         abort(500, 'Not deleted!');
     }
 
-    protected function alertSuccess(BaseModel $model, $title = null, $body = null)
+    protected function alertUpdateSuccess(BaseModel $model, $title = null, $body = null)
     {
         $title = $title !== null ? (is_callable($title) ? $title($model) : $title) : 'C\'est tout bon !';
         $body = $body !== null
             ? (is_callable($body) ? $body($model) : $body)
-            : '<strong>' . $model->getTitle() . '</strong> a été modifié avec succés.';
+            : '<strong>' . $model->getTitle() . '</strong> a été modifié(e) avec succés.';
 
-        return alert()->success($body, $title)
-            ->html()->confirmButton()->autoclose(7000);
+        return $this->alertSuccess($title, $body);
+    }
+
+    protected function alertStoreSuccess(BaseModel $model, $title = null, $body = null)
+    {
+        $title = $title !== null ? (is_callable($title) ? $title($model) : $title) : 'C\'est tout bon !';
+        $body = $body !== null
+            ? (is_callable($body) ? $body($model) : $body)
+            : '<strong>' . $model->getTitle() . '</strong> a été créé(e) avec succés.';
+
+        return $this->alertSuccess($title, $body);
+    }
+
+    protected function alertSuccess($title, $body)
+    {
+        return alert()->success($body, $title)->html()->confirmButton()->autoclose(7000);
     }
 
 }
