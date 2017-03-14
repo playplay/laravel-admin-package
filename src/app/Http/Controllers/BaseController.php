@@ -7,9 +7,10 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Routing\Controller as LaravelController;
+use LaravelAdminPackage\App\Models\BaseModel;
 
-class Controller extends BaseController
+abstract class BaseController extends LaravelController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
@@ -54,7 +55,7 @@ class Controller extends BaseController
         return action('\\' . static::class . '@' . $method, $parameters);
     }
 
-    protected function ajaxDelete(Model $model)
+    protected function ajaxDelete(BaseModel $model)
     {
         if ($model->delete()) {
             return new JsonResponse(['success' => true]);
@@ -63,5 +64,15 @@ class Controller extends BaseController
         abort(500, 'Not deleted!');
     }
 
+    protected function alertSuccess(BaseModel $model, $title = null, $body = null)
+    {
+        $title = $title !== null ? (is_callable($title) ? $title($model) : $title) : 'C\'est tout bon !';
+        $body = $body !== null
+            ? (is_callable($body) ? $body($model) : $body)
+            : '<strong>' . $model->getTitle() . '</strong> a été modifié avec succés.';
+
+        return alert()->success($body, $title)
+            ->html()->confirmButton()->autoclose(7000);
+    }
 
 }

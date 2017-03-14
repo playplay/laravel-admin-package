@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserStoreRequest;
 use App\Http\Requests\Admin\UserUpdateRequest;
 use App\Models\User;
@@ -13,7 +12,7 @@ use LaravelAdminPackage\Html\Show;
 use Spatie\Permission\Models\Permission;
 use Yajra\Datatables\Datatables;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
 
     public function __construct()

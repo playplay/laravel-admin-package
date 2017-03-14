@@ -2,26 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use LaravelAdminPackage\App\Models\BaseModel as AdminModel;
 
-abstract class BaseModel extends Model
+abstract class BaseModel extends AdminModel
 {
-    public function owns(BaseModel $related)
-    {
-        return $this->{$this->getKeyName()} === $related->{$this->getForeignKey()};
-    }
-
-    public function isOwnedBy(BaseModel $related)
-    {
-        return $related->{$related->getKeyName()} === $this->{$related->getForeignKey()};
-    }
-
-    public function getTitle() {
-        if (($value = $this->title) || ($value = $this->name)) {
-            return $value;
-        }
-
-        throw new \BadMethodCallException('No "getTitle()", "title" or "name" provided for ' . static::class . '!');
-    }
-
+    //
 }

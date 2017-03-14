@@ -1,3 +1,5 @@
+@stack('before-styles')
+
 <!-- adminlte -->
 {{ Html::style('assets/admin/vendor/bootstrap/css/bootstrap.min.css') }}
 {{ Html::style('assets/admin/vendor/adminlte/css/AdminLTE.min.css') }}
