@@ -4,9 +4,9 @@ namespace LaravelAdminPackage\App\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
-use LaravelAdminPackage\App\Http\Controllers\Controller;
+use LaravelAdminPackage\App\Http\Controllers\BaseController;
 
-class ResetPasswordController extends Controller
+class ResetPasswordController extends BaseController
 {
     protected $data = []; // the information we send to the view
 

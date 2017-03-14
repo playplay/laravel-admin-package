@@ -4,9 +4,9 @@ namespace LaravelAdminPackage\App\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use LaravelAdminPackage\App\Http\Controllers\Controller;
+use LaravelAdminPackage\App\Http\Controllers\BaseController;
 
-class LoginController extends Controller
+class LoginController extends BaseController
 {
     /*
     |--------------------------------------------------------------------------

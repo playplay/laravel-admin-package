@@ -5,9 +5,9 @@ namespace LaravelAdminPackage\App\Http\Controllers\Auth;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Factory as Validator;
-use LaravelAdminPackage\App\Http\Controllers\Controller;
+use LaravelAdminPackage\App\Http\Controllers\BaseController;
 
-class RegisterController extends Controller
+class RegisterController extends BaseController
 {
     /*
     |--------------------------------------------------------------------------
