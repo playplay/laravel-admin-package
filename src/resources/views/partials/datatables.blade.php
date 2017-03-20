@@ -29,7 +29,10 @@
             @endif
             processing: true,
             serverSide: true,
-            ajax: '{{ $config['ajax_url'] }}',
+            ajax: {
+                url: '{{ $config['ajax_url'] }}',
+                data: {!! json_encode($ajaxData ?? []) !!}
+            },
             columns: {!! $columnsJson !!},
             language: {
                 processing: 'Traitement en cours...',
