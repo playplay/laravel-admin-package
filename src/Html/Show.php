@@ -249,9 +249,10 @@ class Show
     {
         if ($this->gate->allows('delete', [$this->model])) {
             $output = $this->form->open(['method' => 'delete', 'url' => $this->makeUrl('@destroy'), 'rel' => 'delete-button', 'style' => 'display:inline']);
-            if ($nameAttribute) {
-                $output .= $this->form->hidden('name', $this->model->$nameAttribute);
-            }
+
+            $modelTitle = $nameAttribute ? $this->model->$nameAttribute : $this->model->getTitle();
+            $output .= $this->form->hidden('title', $modelTitle);
+
             if ($redirect) {
                 $output .= $this->form->hidden('redirect', $this->makeUrl($redirect));
             }

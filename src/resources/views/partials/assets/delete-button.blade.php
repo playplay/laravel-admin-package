@@ -9,7 +9,7 @@
 
             swal({
                 title: 'Êtes vous sûr ?',
-                text: 'Voulez vous vraiment supprimer ' + (data.name || 'cet élément') + ' ?',
+                text: 'Voulez vous vraiment supprimer ' + (data.title || 'cet élément') + ' ?',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#DD6B55',
@@ -23,7 +23,7 @@
                         'X-CSRF-TOKEN': data._token
                     }
                 }).done(function () {
-                    swal('Supprimé !', (data.name || 'L\'élément') + ' a été supprimé !', 'success');
+                    swal('Supprimé !', (data.title || 'L\'élément') + ' a été supprimé !', 'success');
                     if (data.redirect !== undefined) {
                         window.location = data.redirect;
                     }
