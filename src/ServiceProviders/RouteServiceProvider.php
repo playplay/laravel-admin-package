@@ -23,11 +23,11 @@ class RouteServiceProvider extends ServiceProvider
             config('admin.subdomain') . '.' . config('app.domain') :
             config('app.domain');
 
-        $this->addMiddleware();
+        $this->checkPoliciesInController();
         $this->mapRoutes();
     }
 
-    protected function addMiddleware()
+    protected function checkPoliciesInController()
     {
         $middlewareName = 'checkPoliciesInController';
         $this->router->middleware($middlewareName, CheckIfPolicyIsRegistered::class);
@@ -66,7 +66,7 @@ class RouteServiceProvider extends ServiceProvider
         if (file_exists(base_path('routes/admin.php'))) {
             $this->router->group([
                 'namespace'  => 'App\Http\Controllers\Admin',
-                'middleware' => 'auth',
+                'middleware' => ['auth', 'admin'],
             ], function (Router $router) {
                 require base_path('routes/admin.php');
             });
