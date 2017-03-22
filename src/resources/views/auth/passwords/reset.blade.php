@@ -20,6 +20,7 @@
             <div class="login-box-body">
                 <p class="login-box-msg">Réinitialiser le mot de passe</p>
                 {!! Form::open(['route' => 'admin.auth.passwordReset']) !!}
+                {!! Form::hidden('token', $token) !!}
                 {!! AdminForm::hasFeedback('envelope')->email('email', false, null, ['placeholder' => 'Adresse email']) !!}
                 {!! AdminForm::hasFeedback('lock')->password('password', false, ['placeholder' => 'Mot de passe']) !!}
                 {!! AdminForm::hasFeedback('lock')->password('password_confirmation', false, ['placeholder' => 'Confirmation']) !!}
