@@ -38,7 +38,6 @@ class LoginController extends BaseController
     {
         $this->middleware('guest', ['except' => 'logout']);
 
-        $this->loginPath = route('admin.auth.login');
         $this->redirectTo = route('admin.home');
         $this->redirectAfterLogout = route('admin.home');
     }
