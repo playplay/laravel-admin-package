@@ -25,8 +25,6 @@ class LoginController extends BaseController
      *
      * @var string
      */
-    // if not logged in redirect to
-    protected $loginPath;
     // after you've logged in redirect to
     protected $redirectTo;
     // after you've logged out redirect to
