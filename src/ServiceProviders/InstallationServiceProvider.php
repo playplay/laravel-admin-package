@@ -37,8 +37,6 @@ class InstallationServiceProvider extends ServiceProvider
 
     private function publishesTemplateFiles($group = 'template')
     {
-        $this->publishes([$this->packagePath('/public') => public_path('assets/admin')], $group);
-
         $this->publishes([
             base_path('vendor/almasaeed2010/adminlte/dist/js')  => public_path('assets/admin/vendor/adminlte/js'),
             base_path('vendor/almasaeed2010/adminlte/dist/css') => public_path('assets/admin/vendor/adminlte/css'),
@@ -60,6 +58,8 @@ class InstallationServiceProvider extends ServiceProvider
         $this->publishes([
             base_path('vendor/almasaeed2010/adminlte/plugins/') => public_path('assets/admin/vendor/plugins/'),
         ], $group);
+
+        $this->publishes([$this->packagePath('/public') => public_path('assets/admin')], $group);
     }
 
     private function loadViews()

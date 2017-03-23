@@ -30,7 +30,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function checkPoliciesInController()
     {
         $middlewareName = 'checkPoliciesInController';
-        $this->router->middleware($middlewareName, CheckIfPolicyIsRegistered::class);
+        $this->router->aliasMiddleware($middlewareName, CheckIfPolicyIsRegistered::class);
         if (config('app.debug')) {
             $this->middlewares[] = $middlewareName;
         }
