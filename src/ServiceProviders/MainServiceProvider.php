@@ -13,7 +13,6 @@ class MainServiceProvider extends ServiceProvider
         $this->extendsRouter();
         $this->registerRoutes();
         $this->registerViewHelpers();
-        $this->registerDatatables();
         $this->registerSwal();
         $this->registerMenu();
         $this->registerPermission();
@@ -39,11 +38,6 @@ class MainServiceProvider extends ServiceProvider
     private function registerViewHelpers()
     {
         $this->app->register(ViewHelpersServiceProvider::class);
-    }
-
-    private function registerDatatables()
-    {
-        $this->app->register(\Yajra\Datatables\DatatablesServiceProvider::class);
     }
 
     private function registerSwal()
