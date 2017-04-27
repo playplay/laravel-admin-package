@@ -24,28 +24,30 @@ class ViewHelpersServiceProvider extends ServiceProvider
     {
         $factory->composer(['admin::partials.datatables'], function (View $view) {
             $columns = collect($view->getData()['columns'])
-                ->map(function ($attribute, $key) {
+                ->mapWithKeys(function ($attribute, $key) {
                     if (is_string($key) && is_array($attribute)) {
                         $parameters = $attribute;
                         $attribute = $key;
                     }
 
-                    return array_merge(['data' => $attribute, 'name' => $attribute], ($parameters ?? []));
-                })->values();
+                    return [$attribute => array_merge(['data' => $attribute, 'name' => $attribute], ($parameters ?? []))];
+                });
 
             $config = $view->getData()['config'];
             if (isset($config['has_actions']) && $config['has_actions']) {
-                $columns = $columns->merge([[
-                    'data'       => 'actions',
-                    'name'       => 'actions',
-                    'searchable' => false,
-                    'orderable'  => false,
-                ]]);
+                $columns = $columns->merge([
+                    'actions' => [
+                        'data'       => 'actions',
+                        'name'       => 'actions',
+                        'searchable' => false,
+                        'orderable'  => false,
+                    ],
+                ]);
             }
 
             return $view->with([
-                'columnsNames' => $columns->pluck('data'),
-                'columnsJson' => $columns->toJson(),
+                'columnsNames' => $columns->keys(),
+                'columnsJson'  => $columns->values()->toJson(),
             ]);
         });
     }
