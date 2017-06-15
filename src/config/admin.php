@@ -15,6 +15,7 @@ return [
 
     // Fully qualified namespace of the User model
     'user_model_fqn'       => '\App\Models\User',
+    'user_passwor_reset_route' => 'auth.passwordReset',
 
     // Should we use the default package auth routes and controllers?
     'use_default_auth'     => true,
