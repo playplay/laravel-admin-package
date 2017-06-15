@@ -23,7 +23,7 @@ class Router extends \Illuminate\Routing\Router
         // Password Reset Routes...
         $this->get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('passwordReset');
         $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('passwordSendEmail');
-        $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm');
+        $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('passwordResetForm');
         $this->post('password/reset', 'Auth\ResetPasswordController@reset');
     }
 
