@@ -16,7 +16,7 @@ class ResetPassword extends \Illuminate\Auth\Notifications\ResetPassword
     {
         return (new MailMessage)
             ->line('You are receiving this email because we received a password reset request for your account.')
-            ->action('Reset Password', url(config('app.url').route(config('admin.user_passwor_reset_route'), $this->token, false)))
+            ->action('Reset Password', url(config('app.url').route(config('admin.user_password_reset_route'), $this->token, false)))
             ->line('If you did not request a password reset, no further action is required.');
     }
 }
