@@ -91,7 +91,7 @@ class Show
             return $default;
         }
 
-        $url = $this->makeUrl([$actionOrRoute, $relation->id], $relation);
+        $url = $this->makeUrl([$actionOrRoute, $relation[$relation->getKeyName()]], $relation);
 
         return link_to($url, $relation->$relation_title_attribute);
     }
@@ -108,7 +108,7 @@ class Show
             list($href, $parameters) = $hrefWithParameters;
         } else {
             $href = $hrefWithParameters;
-            $parameters = $model->id;
+            $parameters = $model[$model->getKeyName()];
         }
 
         if ($href) {
