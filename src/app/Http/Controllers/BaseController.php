@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as LaravelController;
+use LaravelAdminPackage\App\Http\Middleware\CheckIfPolicyIsRegistered;
 use LaravelAdminPackage\App\Models\BaseModel;
 
 abstract class BaseController extends LaravelController
@@ -69,6 +70,11 @@ abstract class BaseController extends LaravelController
             : '<strong>' . $model->getTitle() . '</strong> a été créé(e) avec succés.';
 
         return $this->alertSuccess($title, $body);
+    }
+
+    protected function disableWarningMessageForPolicy()
+    {
+        CheckIfPolicyIsRegistered::addControllersExceptions(class_basename($this));
     }
 
 }
