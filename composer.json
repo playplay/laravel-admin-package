@@ -3,14 +3,14 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "laravel/framework": "~5.4.0",
+        "laravel/framework": "~5.5.0",
         "uxweb/sweet-alert": "^1.4",
-        "laravelcollective/html": "~5.4.0",
+        "laravelcollective/html": "~5.5.0",
         "almasaeed2010/AdminLTE": "2.3.*",
         "watson/bootstrap-form": "^1.1",
         "fortawesome/font-awesome": "^4.7",
-        "spatie/laravel-menu": "^2.1",
-        "spatie/laravel-permission": "^1.8"
+        "spatie/laravel-menu": "^3.0",
+        "spatie/laravel-permission": "^2.6"
     },
     "suggest": {
         "yajra/laravel-datatables-oracle": "Manage datatables"
