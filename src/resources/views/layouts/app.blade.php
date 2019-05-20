@@ -11,7 +11,7 @@
                     @include('admin::layouts.partials.navigation.contentheader')
                 @endif
 
-                <section class="content {{ $no_padding or '' }}">
+                <section class="content {{ $no_padding ?? '' }}">
                     @yield('main-content')
                 </section>
             </div>
