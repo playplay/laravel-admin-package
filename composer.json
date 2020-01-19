@@ -8,9 +8,7 @@
         "laravel/framework": "5.7.*",
         "uxweb/sweet-alert": "^1.4",
         "laravelcollective/html": "5.7.*",
-        "almasaeed2010/adminlte": "2.4.*",
         "watson/bootstrap-form": "^1.1",
-        "fortawesome/font-awesome": "^4.7",
         "spatie/laravel-menu": "^3.0",
         "spatie/laravel-permission": "^2.6"
     },
