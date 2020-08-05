@@ -7,9 +7,10 @@ class Router extends \Illuminate\Routing\Router
     /**
      * Register the typical authentication routes for an application.
      *
+     * @param array $options
      * @return void
      */
-    public function auth()
+    public function auth(array $options = [])
     {
         // Authentication Routes...
         $this->get('login', 'Auth\LoginController@showLoginForm')->name('login');

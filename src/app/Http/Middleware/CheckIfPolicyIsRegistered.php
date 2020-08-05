@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class CheckIfPolicyIsRegistered
 {
-    protected $controllersExceptions = [
+    public static $controllersExceptions = [
         'Closure',
         'LoginController',
         'LogoutController',
@@ -21,6 +21,13 @@ class CheckIfPolicyIsRegistered
     public function __construct(Application $app)
     {
         $this->policies = (new AuthServiceProvider($app))->getPolicies();
+    }
+
+    public static function addControllersExceptions($controllerExceptions)
+    {
+        $controllerExceptions = is_array($controllerExceptions) ? $controllerExceptions : func_get_args();
+
+        self::$controllersExceptions = array_merge(self::$controllersExceptions, $controllerExceptions);
     }
 
     public function handle(Request $request, Closure $next)
@@ -52,7 +59,7 @@ class CheckIfPolicyIsRegistered
 
     protected function isInControllersExceptions(string $controllerClassName): bool
     {
-        return collect($this->controllersExceptions)->contains(function ($exception) use ($controllerClassName) {
+        return collect(self::$controllersExceptions)->contains(function ($exception) use ($controllerClassName) {
             return str_contains($controllerClassName, $exception);
         });
     }
