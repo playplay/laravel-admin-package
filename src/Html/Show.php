@@ -112,7 +112,7 @@ class Show
         }
 
         if ($href) {
-            if (starts_with($href, '@')) {
+            if (Str::startsWith($href, '@')) {
                 $href = 'Admin\\' . Str::studly(class_basename($model)) . 'Controller' . $href;
 
                 return action($href, $parameters);
